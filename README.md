@@ -1,0 +1,59 @@
+# Setula backend MVP
+
+Backend-only golden path for one UAE agency paying an India-based contractor.
+Fiat funding and payout are simulated; settlement uses a real USDC transfer on
+Arc Testnet through Circle developer-controlled wallets.
+
+The binding product boundary is [`MVP_SCOPE.md`](./MVP_SCOPE.md).
+
+## Requirements
+
+- Node.js 22 or newer
+- Circle test API key and its registered entity secret
+- Funded sender and recipient developer-controlled wallet IDs/addresses on `ARC-TESTNET`
+
+Copy `.env.example` to `.env` and populate it locally. Never commit `.env`.
+
+## Run
+
+```sh
+cd /Users/macbook/setula
+npm install
+npm start
+```
+
+The backend listens at `http://127.0.0.1:4000` by default. Runtime data is
+persisted atomically to `.setula-data.json`.
+
+## API routes
+
+Every `POST` requires an `Idempotency-Key` header. The payout callback also
+requires `X-Payout-Callback-Secret` matching `PAYOUT_CALLBACK_SECRET`.
+
+| Method | Route | Purpose |
+| --- | --- | --- |
+| `GET` | `/health` | Local health check |
+| `POST` | `/api/beneficiaries` | Create the India beneficiary |
+| `POST` | `/api/invoices` | Create the INR invoice |
+| `POST` | `/api/invoices/:invoiceId/quotes` | Generate the fixed sandbox AED/INR quote |
+| `POST` | `/api/payments` | Create the payment intent in `QUOTED` |
+| `POST` | `/api/payments/:paymentId/funding-confirmations` | Confirm simulated AED funding |
+| `POST` | `/api/payments/:paymentId/settlements` | Execute/reconcile the Arc USDC transfer |
+| `POST` | `/api/payout-callbacks` | Simulate INR payout delivery/rejection |
+| `GET` | `/api/payments/:paymentId` | Read payment and linked objects/timeline |
+| `GET` | `/api/receipts/:receiptId` | Read the invoice-linked receipt |
+
+Amounts ending in `Minor` are integer minor units: paise for INR and fils for
+AED. The sandbox rates are fixed at `22.75 INR/AED` and `100.00 INR/USDC` so a
+quote is deterministic and needs no external FX dependency.
+
+## Verify
+
+```sh
+npm run typecheck
+npm test
+```
+
+Automated tests inject a settlement gateway and never spend Arc Testnet USDC.
+The runtime server uses the real Circle/Arc adapter ported from
+`setula-arc-spike`.

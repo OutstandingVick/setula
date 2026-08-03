@@ -1,0 +1,8 @@
+.env
+.setula-wallets.json
+.setula-data.json
+.DS_Store
+node_modules/
+dist/
+coverage/
+*.log
