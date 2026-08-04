@@ -86,6 +86,10 @@ npm test
 npm run build:landing
 ```
 
+Run `npm run verify:golden-path` for the real Arc validation. Set
+`VERIFY_BASE_URL` to target a deployed backend instead of starting the local
+verification server.
+
 Automated tests inject a settlement gateway and never spend Arc Testnet USDC.
 The current suite contains 16 tests covering the backend state machine,
 idempotency and failure paths, reference integrity, and landing quote-link

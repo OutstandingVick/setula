@@ -22,6 +22,7 @@ const runtimeSchema = z.object({
   PORT: z.coerce.number().int().positive().max(65_535).default(4_000),
   DATA_FILE: z.string().min(1).default(".setula-data.json"),
   PAYOUT_CALLBACK_SECRET: z.string().min(12),
+  VERIFY_BASE_URL: z.url().optional(),
 });
 
 type PaymentAggregate = {
@@ -71,16 +72,20 @@ async function main(): Promise<void> {
     throw new Error("Sender has less than the required 0.01 USDC");
   }
 
-  const service = new SetulaService(
-    new JsonFileStore(resolve(runtime.DATA_FILE)),
-    new ArcCircleSettlementGateway(),
-    runtime.PAYOUT_CALLBACK_SECRET,
-  );
-  const server = createHttpServer(service);
-  server.listen(runtime.PORT, "127.0.0.1");
-  await once(server, "listening");
-  const address = server.address() as AddressInfo;
-  const baseUrl = `http://127.0.0.1:${address.port}`;
+  let server: ReturnType<typeof createHttpServer> | undefined;
+  let baseUrl = runtime.VERIFY_BASE_URL?.replace(/\/$/, "");
+  if (!baseUrl) {
+    const service = new SetulaService(
+      new JsonFileStore(resolve(runtime.DATA_FILE)),
+      new ArcCircleSettlementGateway(),
+      runtime.PAYOUT_CALLBACK_SECRET,
+    );
+    server = createHttpServer(service);
+    server.listen(runtime.PORT, "127.0.0.1");
+    await once(server, "listening");
+    const address = server.address() as AddressInfo;
+    baseUrl = `http://127.0.0.1:${address.port}`;
+  }
 
   async function post<T>(
     path: string,
@@ -358,9 +363,11 @@ async function main(): Promise<void> {
     };
     console.log(JSON.stringify(evidence, null, 2));
   } finally {
-    await new Promise<void>((resolve, reject) =>
-      server.close((error) => (error ? reject(error) : resolve())),
-    );
+    if (server) {
+      await new Promise<void>((resolve, reject) =>
+        server.close((error) => (error ? reject(error) : resolve())),
+      );
+    }
   }
 }
 
