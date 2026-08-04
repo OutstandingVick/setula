@@ -240,6 +240,31 @@ describe("Setula backend golden path", () => {
     expect(second.payment.timeline.filter(({ status }) => status === "DELIVERED")).toHaveLength(1);
   });
 
+  it("shows a payout rejection without creating a receipt", async () => {
+    const service = new SetulaService(
+      new MemoryStore(),
+      new FakeSettlementGateway(),
+      CALLBACK_SECRET,
+    );
+    const seeded = await pendingPayout(service);
+
+    const result = await service.simulatePayout(
+      seeded.payment.id,
+      "REJECTED",
+      "1cb0cf06-0d85-47f7-b87f-ad709bc52f05",
+    );
+
+    expect(result.payment.status).toBe("PAYOUT_REJECTED");
+    expect(result.payout.status).toBe("REJECTED");
+    expect(result.receipt).toBeUndefined();
+    expect(result.payment.timeline.map(({ status }) => status)).toContain(
+      "SETTLED",
+    );
+    expect(result.payment.timeline.map(({ status }) => status)).not.toContain(
+      "DELIVERED",
+    );
+  });
+
   it("rejects an invalid state transition", async () => {
     const service = new SetulaService(
       new MemoryStore(),

@@ -1,4 +1,6 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { z, ZodError } from "zod";
 import { AppError, ValidationError } from "./errors.js";
 import type { SetulaService } from "./service.js";
@@ -29,9 +31,30 @@ const payoutCallbackSchema = z.object({
   status: z.enum(["DELIVERED", "REJECTED"]),
 });
 
+const demoPayoutSchema = z.object({
+  status: z.enum(["DELIVERED", "REJECTED"]).default("DELIVERED"),
+});
+
 function send(response: ServerResponse, statusCode: number, body: unknown): void {
   response.writeHead(statusCode, { "content-type": "application/json; charset=utf-8" });
   response.end(`${JSON.stringify(body)}\n`);
+}
+
+async function sendPublicFile(
+  response: ServerResponse,
+  fileName: "index.html" | "styles.css" | "app.js",
+): Promise<void> {
+  const mimeTypes = {
+    "index.html": "text/html; charset=utf-8",
+    "styles.css": "text/css; charset=utf-8",
+    "app.js": "text/javascript; charset=utf-8",
+  } as const;
+  const file = await readFile(resolve("public", fileName));
+  response.writeHead(200, {
+    "content-type": mimeTypes[fileName],
+    "cache-control": "no-store",
+  });
+  response.end(file);
 }
 
 async function readJson(request: IncomingMessage): Promise<unknown> {
@@ -62,6 +85,19 @@ export function createHttpServer(service: SetulaService) {
       const method = request.method ?? "GET";
       const url = new URL(request.url ?? "/", "http://localhost");
       const path = url.pathname;
+
+      const publicFile =
+        path === "/"
+          ? "index.html"
+          : path === "/styles.css"
+            ? "styles.css"
+            : path === "/app.js"
+              ? "app.js"
+              : undefined;
+      if (method === "GET" && publicFile) {
+        await sendPublicFile(response, publicFile);
+        return;
+      }
 
       if (method === "GET" && path === "/health") {
         send(response, 200, { status: "ok" });
@@ -133,6 +169,18 @@ export function createHttpServer(service: SetulaService) {
           Array.isArray(callbackSecret)
             ? (callbackSecret[0] ?? "")
             : (callbackSecret ?? ""),
+        );
+        send(response, 200, result);
+        return;
+      }
+
+      const demoPayoutMatch = /^\/api\/payments\/([0-9a-f-]+)\/demo-payouts$/.exec(path);
+      if (method === "POST" && demoPayoutMatch) {
+        const body = demoPayoutSchema.parse(await readJson(request));
+        const result = await service.simulatePayout(
+          z.string().uuid().parse(demoPayoutMatch[1]),
+          body.status,
+          idempotencyKey(request),
         );
         send(response, 200, result);
         return;

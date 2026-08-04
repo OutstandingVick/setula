@@ -97,16 +97,11 @@ describe("Setula HTTP API", () => {
     expect(pendingPayout.status).toBe("PAYOUT_PENDING");
 
     const callback = await post<{ payment: Payment; receipt: Receipt }>(
-      "/api/payout-callbacks",
+      `/api/payments/${payment.id}/demo-payouts`,
       "http-payout-1",
       {
-        callbackId: "http-callback-1",
-        paymentId: payment.id,
-        reference: invoice.reference,
-        amountInrMinor: invoice.amountInrMinor,
         status: "DELIVERED",
       },
-      { "x-payout-callback-secret": "http-callback-secret" },
     );
     expect(callback.payment.status).toBe("DELIVERED");
 

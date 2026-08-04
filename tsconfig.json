@@ -9,5 +9,5 @@
     "types": ["node", "vitest/globals"],
     "outDir": "dist"
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "web"]
 }

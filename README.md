@@ -1,6 +1,6 @@
-# Setula backend MVP
+# Setula MVP
 
-Backend-only golden path for one UAE agency paying an India-based contractor.
+Thin demo UI and backend golden path for one UAE agency paying an India-based contractor.
 Fiat funding and payout are simulated; settlement uses a real USDC transfer on
 Arc Testnet through Circle developer-controlled wallets.
 
@@ -25,6 +25,16 @@ npm start
 The backend listens at `http://127.0.0.1:4000` by default. Runtime data is
 persisted atomically to `.setula-data.json`.
 
+Open `http://127.0.0.1:4000` to run the browser journey:
+
+```text
+Invoice details → Quote review → Arc settlement progress → Local payout confirmation → Receipt
+```
+
+The browser never receives Circle credentials or the payout callback secret.
+Every mutation uses a preserved idempotency key and disables repeated actions
+while a request is in flight.
+
 ## API routes
 
 Every `POST` requires an `Idempotency-Key` header. The payout callback also
@@ -40,6 +50,7 @@ requires `X-Payout-Callback-Secret` matching `PAYOUT_CALLBACK_SECRET`.
 | `POST` | `/api/payments/:paymentId/funding-confirmations` | Confirm simulated AED funding |
 | `POST` | `/api/payments/:paymentId/settlements` | Execute/reconcile the Arc USDC transfer |
 | `POST` | `/api/payout-callbacks` | Simulate INR payout delivery/rejection |
+| `POST` | `/api/payments/:paymentId/demo-payouts` | Server-side demo bridge to the existing simulated payout callback |
 | `GET` | `/api/payments/:paymentId` | Read payment and linked objects/timeline |
 | `GET` | `/api/receipts/:receiptId` | Read the invoice-linked receipt |
 

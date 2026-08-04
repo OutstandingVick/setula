@@ -546,6 +546,25 @@ export class SetulaService {
     });
   }
 
+  async simulatePayout(
+    paymentId: string,
+    status: "DELIVERED" | "REJECTED",
+    idempotencyKey: string,
+  ): Promise<{ payment: Payment; payout: Payout; receipt?: Receipt }> {
+    const aggregate = await this.getPayment(paymentId);
+    return this.receivePayoutCallback(
+      {
+        callbackId: `demo-${idempotencyKey}`,
+        paymentId,
+        reference: aggregate.payment.reference,
+        amountInrMinor: aggregate.invoice.amountInrMinor,
+        status,
+      },
+      idempotencyKey,
+      this.payoutCallbackSecret,
+    );
+  }
+
   async getPayment(paymentId: string): Promise<{
     payment: Payment;
     invoice: Invoice;
