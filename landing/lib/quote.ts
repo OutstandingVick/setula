@@ -9,6 +9,7 @@ export type SandboxQuote = {
 };
 
 export function sanitizeAedInput(value: string): string {
+  if (value.trimStart().startsWith("-")) return "";
   const normalized = value.replaceAll(",", "").replace(/[^\d.]/g, "");
   const [whole = "", ...fractionParts] = normalized.split(".");
   const fraction = fractionParts.join("").slice(0, 2);

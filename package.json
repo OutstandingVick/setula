@@ -11,7 +11,7 @@
     "build:landing": "next build landing",
     "build": "npm run build:web && npm run typecheck",
     "dev": "npm run build:web && tsx --env-file-if-exists=.env src/server.ts",
-    "dev:landing": "next dev landing -p 3000",
+    "dev:landing": "next dev landing -p 3001",
     "start": "npm run build:web && tsx --env-file-if-exists=.env src/server.ts",
     "verify:golden-path": "tsx --env-file=.env scripts/run-golden-path.ts",
     "test": "vitest run",

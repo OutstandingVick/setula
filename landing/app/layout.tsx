@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3001"),
   title: "Setula — Cross-border contractor payments",
   description:
     "A working Arc Testnet prototype for exact contractor payments from AED to INR.",

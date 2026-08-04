@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const SettlementScene = dynamic(
   () => import("./SettlementScene").then((module) => module.SettlementScene),
@@ -19,16 +19,25 @@ function canEnhanceSettlement(): boolean {
 }
 
 export function SettlementVisual() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [enhanced, setEnhanced] = useState(false);
   const [ready, setReady] = useState(false);
   const handleReady = useCallback(() => setReady(true), []);
 
   useEffect(() => {
-    setEnhanced(canEnhanceSettlement());
+    const container = containerRef.current;
+    if (!container) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      setEnhanced(canEnhanceSettlement());
+      observer.disconnect();
+    }, { rootMargin: "320px" });
+    observer.observe(container);
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div className={`settlement-visual${ready ? " is-enhanced" : ""}`}>
+    <div className={`settlement-visual${ready ? " is-enhanced" : ""}`} ref={containerRef}>
       <div className="settlement-fallback" aria-label="Payment route: AED funding, USDC settlement on Arc, then INR payout">
         <span><strong>AED</strong><small>Agency funds</small></span>
         <i aria-hidden="true" />

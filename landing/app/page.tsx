@@ -12,9 +12,10 @@ const demoUrl = process.env.NEXT_PUBLIC_DEMO_URL ?? "http://127.0.0.1:4000";
 export default function LandingPage() {
   return (
     <>
+      <a className="skip-link" href="#landing-title">Skip to main content</a>
       <header className="site-header">
         <nav className="nav-shell" aria-label="Main navigation">
-          <a className="wordmark" href="#top" aria-label="Setula home">
+          <a className="wordmark" href="#top" aria-label="Setula">
             <span className="wordmark-mark" aria-hidden="true">S</span>
             <span>Setula</span>
           </a>
@@ -44,7 +45,7 @@ export default function LandingPage() {
         <nav className="footer-links" aria-label="Footer navigation">
           <a href="https://github.com/OutstandingVick/setula">GitHub</a>
           <a href="https://testnet.arcscan.app/tx/0x347ac773f6d280952fb84ad41347e0e8f543bc93262465904e0e55db022d4900">ArcScan proof</a>
-          <a href="#infrastructure">Documentation</a>
+          <a href="https://github.com/OutstandingVick/setula#readme">Documentation</a>
         </nav>
       </footer>
     </>

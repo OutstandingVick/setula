@@ -1,0 +1,1 @@
+Setula payment route from AED through USDC settlement on Arc to INR contractor delivery.

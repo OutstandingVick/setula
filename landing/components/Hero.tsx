@@ -14,9 +14,9 @@ type HeroProps = {
 
 const quoteRows = [
   ["Exchange rate", "1 AED = 22.75 INR"],
-  ["Setula fee", "20.00 AED"],
-  ["Partner / payout fee", "15.00 AED"],
-  ["Estimated delivery", "Same business day"],
+  ["Setula fee · sandbox", "20.00 AED"],
+  ["Partner / payout fee · sandbox", "15.00 AED"],
+  ["Estimated delivery · sandbox", "Same business day"],
 ] as const;
 
 export function Hero({ demoUrl }: HeroProps) {
