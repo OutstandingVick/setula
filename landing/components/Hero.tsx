@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import {
+  buildDemoUrl,
   calculateSandboxQuote,
   DEFAULT_AED_INPUT,
   formatMinor,
@@ -24,15 +25,7 @@ export function Hero({ demoUrl }: HeroProps) {
   const quote = useMemo(() => calculateSandboxQuote(aedInput), [aedInput]);
   const inputError = quote === null ? "Enter an AED amount greater than 0 and no more than 1,000,000." : undefined;
   const receiveValue = quote ? formatMinor(quote.amountInrMinor, "INR") : "—";
-  const continueUrl = useMemo(() => {
-    if (!quote) return undefined;
-    const params = new URLSearchParams({
-      aedMinor: quote.amountAedMinor.toString(),
-      inrMinor: quote.amountInrMinor.toString(),
-      source: "landing-quote",
-    });
-    return `${demoUrl}${demoUrl.includes("?") ? "&" : "?"}${params.toString()}`;
-  }, [demoUrl, quote]);
+  const continueUrl = useMemo(() => quote ? buildDemoUrl(demoUrl, quote) : undefined, [demoUrl, quote]);
 
   function updateAmount(nextValue: string): void {
     const sanitized = sanitizeAedInput(nextValue);

@@ -35,6 +35,21 @@ The browser never receives Circle credentials or the payout callback secret.
 Every mutation uses a preserved idempotency key and disables repeated actions
 while a request is in flight.
 
+### Run the public landing page
+
+Keep the backend running on port `4000`, then start the Next.js landing page in
+a second terminal:
+
+```sh
+cd /Users/macbook/setula
+npm run dev:landing
+```
+
+Open `http://localhost:3001`. The calculator passes validated AED and INR
+minor-unit values into the existing backend-served demo. Set
+`NEXT_PUBLIC_DEMO_URL` only when the backend is hosted somewhere other than
+`http://127.0.0.1:4000`.
+
 ## API routes
 
 Every `POST` requires an `Idempotency-Key` header. The payout callback also
@@ -62,7 +77,9 @@ quote is deterministic and needs no external FX dependency.
 
 ```sh
 npm run typecheck
+npm run typecheck:landing
 npm test
+npm run build:landing
 ```
 
 Automated tests inject a settlement gateway and never spend Arc Testnet USDC.
