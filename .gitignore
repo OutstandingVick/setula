@@ -7,3 +7,5 @@ dist/
 coverage/
 *.log
 public/app.js
+landing/.next/
+landing/tsconfig.tsbuildinfo

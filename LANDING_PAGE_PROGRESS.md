@@ -4,7 +4,7 @@ The payment-demo baseline was published separately as `73b7b45` (`feat: add paym
 
 | # | Milestone | Commit | Push |
 | --- | --- | --- | --- |
-| 1 | `docs: add landing page research and reference analysis` | Recorded in the next progress update | Pending |
+| 1 | `docs: add landing page research and reference analysis` | `e2b3432` | Pushed to `origin/main` |
 | 2 | `feat: add landing page structure and navigation` | Pending | Pending |
 | 3 | `feat: build Wise-inspired hero layout` | Pending | Pending |
 | 4 | `feat: add functional AED to INR quote calculator` | Pending | Pending |
