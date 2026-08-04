@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  buildDemoUrl,
   calculateSandboxQuote,
   formatMinor,
   parseAedToMinor,
@@ -34,13 +33,5 @@ describe("landing sandbox quote", () => {
   it("formats whole and fractional minor-unit amounts", () => {
     expect(formatMinor(9_100_000n, "INR")).toBe("91,000");
     expect(formatMinor(123_456n, "AED")).toBe("1,234.56");
-  });
-
-  it("creates a demo URL carrying both quote values", () => {
-    const quote = calculateSandboxQuote("4000");
-    expect(quote).not.toBeNull();
-    expect(buildDemoUrl("http://127.0.0.1:4000", quote!)).toBe(
-      "http://127.0.0.1:4000?aedMinor=400000&inrMinor=9100000&source=landing-quote",
-    );
   });
 });

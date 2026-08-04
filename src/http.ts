@@ -42,12 +42,13 @@ function send(response: ServerResponse, statusCode: number, body: unknown): void
 
 async function sendPublicFile(
   response: ServerResponse,
-  fileName: "index.html" | "styles.css" | "app.js",
+  fileName: "index.html" | "styles.css" | "app.js" | "favicon.svg",
 ): Promise<void> {
   const mimeTypes = {
     "index.html": "text/html; charset=utf-8",
     "styles.css": "text/css; charset=utf-8",
     "app.js": "text/javascript; charset=utf-8",
+    "favicon.svg": "image/svg+xml",
   } as const;
   const file = await readFile(resolve("public", fileName));
   response.writeHead(200, {
@@ -86,13 +87,21 @@ export function createHttpServer(service: SetulaService) {
       const url = new URL(request.url ?? "/", "http://localhost");
       const path = url.pathname;
 
+      if (method === "GET" && path === "/") {
+        response.writeHead(302, { location: "/pay" });
+        response.end();
+        return;
+      }
+
       const publicFile =
-        path === "/"
+        path === "/pay"
           ? "index.html"
-          : path === "/styles.css"
+          : path === "/pay/styles.css"
             ? "styles.css"
-            : path === "/app.js"
+            : path === "/pay/app.js"
               ? "app.js"
+              : path === "/pay/favicon.svg"
+                ? "favicon.svg"
               : undefined;
       if (method === "GET" && publicFile) {
         await sendPublicFile(response, publicFile);

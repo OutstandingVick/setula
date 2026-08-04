@@ -23,11 +23,11 @@ npm start
 ```
 
 The backend binds to `0.0.0.0:4000` by default so deployment platforms can
-route traffic to it. It remains available locally at `http://127.0.0.1:4000`.
+route traffic to it. Its direct local payment route is `http://localhost:4000/pay`.
 Set `HOST` to override the bind address. Runtime data is persisted atomically
 to `.setula-data.json`.
 
-Open `http://127.0.0.1:4000` to run the browser journey:
+Open `http://localhost:4000/pay` to run the backend-served browser journey:
 
 ```text
 Invoice details → Quote review → Arc settlement progress → Local payout confirmation → Receipt
@@ -48,10 +48,11 @@ npm run dev:landing
 ```
 
 Open `http://localhost:3001`. The hero shows a static preview of the contractor
-payment screen. Its primary call to action opens the backend-served demo with
-the fixed sandbox AED and INR quote encoded as validated minor-unit values. Set
-`NEXT_PUBLIC_DEMO_URL` when the backend is hosted somewhere other than
-`http://127.0.0.1:4000`.
+payment screen. Every demo link stays on the same visible origin and opens the
+clean `http://localhost:3001/pay` route with the fixed sandbox AED and INR quote
+already loaded. Set `DEMO_BACKEND_ORIGIN` when the backend proxy is hosted
+somewhere other than `http://127.0.0.1:4000`. Set `NEXT_PUBLIC_DEMO_URL` only
+when the demo intentionally lives on a separate public origin.
 
 ## API routes
 

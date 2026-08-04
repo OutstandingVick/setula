@@ -21,6 +21,36 @@ afterEach(async () => {
 });
 
 describe("Setula HTTP API", () => {
+  it("serves the browser demo from the canonical /pay route", async () => {
+    const service = new SetulaService(
+      new MemoryStore(),
+      {
+        async transfer() {
+          throw new Error("Settlement is not used by the route test");
+        },
+      },
+      "http-callback-secret",
+    );
+    const server = createHttpServer(service);
+    servers.push(server);
+    server.listen(0, "127.0.0.1");
+    await once(server, "listening");
+    const { port } = server.address() as AddressInfo;
+    const baseUrl = `http://127.0.0.1:${port}`;
+
+    const rootResponse = await fetch(baseUrl, { redirect: "manual" });
+    expect(rootResponse.status).toBe(302);
+    expect(rootResponse.headers.get("location")).toBe("/pay");
+
+    const payResponse = await fetch(`${baseUrl}/pay`);
+    expect(payResponse.status).toBe(200);
+    expect(await payResponse.text()).toContain("Setula — Contractor payment");
+
+    const stylesheetResponse = await fetch(`${baseUrl}/pay/styles.css`);
+    expect(stylesheetResponse.status).toBe(200);
+    expect(stylesheetResponse.headers.get("content-type")).toContain("text/css");
+  });
+
   it("exposes the complete backend golden path", async () => {
     const gateway: SettlementGateway = {
       async transfer() {

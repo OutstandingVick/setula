@@ -8,7 +8,7 @@ import {
 import { ProductProof } from "../components/ProductProof";
 import { SetulaLogo } from "../components/SetulaLogo";
 
-const demoUrl = process.env.NEXT_PUBLIC_DEMO_URL ?? "http://127.0.0.1:4000";
+const demoUrl = process.env.NEXT_PUBLIC_DEMO_URL ?? "/pay";
 
 export default function LandingPage() {
   return (

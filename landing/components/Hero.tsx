@@ -1,19 +1,10 @@
 import Image from "next/image";
-import {
-  buildDemoUrl,
-  calculateSandboxQuote,
-  DEFAULT_AED_INPUT,
-} from "../lib/quote";
 
 type HeroProps = {
   demoUrl: string;
 };
 
-const defaultQuote = calculateSandboxQuote(DEFAULT_AED_INPUT);
-
 export function Hero({ demoUrl }: HeroProps) {
-  const continueUrl = defaultQuote ? buildDemoUrl(demoUrl, defaultQuote) : demoUrl;
-
   return (
     <section className="hero-shell" aria-labelledby="landing-title">
       <div className="hero-copy">
@@ -23,7 +14,7 @@ export function Hero({ demoUrl }: HeroProps) {
           invoice-linked records and verifiable USDC settlement on Arc.
         </p>
         <div className="hero-actions">
-          <a className="button" href={continueUrl}>Launch payment demo</a>
+          <a className="button" href={demoUrl}>Launch payment demo</a>
           <a className="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
         </div>
         <p className="trust-line">

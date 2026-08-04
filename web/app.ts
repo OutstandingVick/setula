@@ -144,6 +144,11 @@ type LandingPrefill = {
   amountInrMinor: number;
 };
 
+const DEFAULT_DEMO_QUOTE: LandingPrefill = {
+  amountAedMinor: 400_000,
+  amountInrMinor: 9_100_000,
+};
+
 const appRoot = document.querySelector<HTMLDivElement>("#app");
 if (!appRoot) throw new Error("Setula app root is missing");
 const app: HTMLDivElement = appRoot;
@@ -162,21 +167,12 @@ let model: Model = { view: "details" };
 let expiryTimer: number | undefined;
 const inFlight = new Map<string, Promise<unknown>>();
 
-function readLandingPrefill(): LandingPrefill | undefined {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("source") !== "landing-quote") return undefined;
-  const aedMinor = Number(params.get("aedMinor"));
-  const inrMinor = Number(params.get("inrMinor"));
-  if (
-    !Number.isSafeInteger(aedMinor) ||
-    !Number.isSafeInteger(inrMinor) ||
-    aedMinor <= 0 ||
-    inrMinor <= 0
-  ) return undefined;
-  return { amountAedMinor: aedMinor, amountInrMinor: inrMinor };
+const landingPrefill = DEFAULT_DEMO_QUOTE;
+const simulateRejectedPayout =
+  new URLSearchParams(window.location.search).get("payout") === "rejected";
+if (window.location.pathname !== "/pay" || window.location.search) {
+  window.history.replaceState({}, "", "/pay");
 }
-
-let landingPrefill = readLandingPrefill();
 
 function escapeHtml(value: unknown): string {
   return String(value)
@@ -598,8 +594,6 @@ function resetPayment(): void {
   runId = crypto.randomUUID();
   sessionStorage.setItem("setula:run-id", runId);
   defaultReference = `INV-SET-${runId.slice(0, 6).toUpperCase()}`;
-  landingPrefill = undefined;
-  if (window.location.search) window.history.replaceState({}, "", "/");
   model = { view: "details" };
   render(true);
 }
@@ -771,12 +765,10 @@ async function completePayout(): Promise<void> {
     try {
       model = { ...model, busy: "Processing simulated INR payout…", error: undefined };
       render();
-      const rejectPayout =
-        new URLSearchParams(window.location.search).get("payout") === "rejected";
       await request(`/api/payments/${payment.id}/demo-payouts`, payoutResultSchema, {
         method: "POST",
         key: actionKey("payout"),
-        body: { status: rejectPayout ? "REJECTED" : "DELIVERED" },
+        body: { status: simulateRejectedPayout ? "REJECTED" : "DELIVERED" },
       });
       const aggregate = await request(`/api/payments/${payment.id}`, aggregateSchema);
       model = {

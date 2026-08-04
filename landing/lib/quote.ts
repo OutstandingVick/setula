@@ -42,12 +42,3 @@ export function formatMinor(amountMinor: bigint, currency: "AED" | "INR"): strin
     maximumFractionDigits: 2,
   }).format(Number(amountMinor) / 100);
 }
-
-export function buildDemoUrl(demoUrl: string, quote: SandboxQuote): string {
-  const params = new URLSearchParams({
-    aedMinor: quote.amountAedMinor.toString(),
-    inrMinor: quote.amountInrMinor.toString(),
-    source: "landing-quote",
-  });
-  return `${demoUrl}${demoUrl.includes("?") ? "&" : "?"}${params.toString()}`;
-}
