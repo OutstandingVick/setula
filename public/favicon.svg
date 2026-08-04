@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Setula">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
   <rect width="120" height="120" rx="28" fill="#0A1B2E"/>
   <path d="M92 30 C92 12, 66 12, 50 22 C34 32, 34 48, 50 56 C66 64, 66 64, 66 64" fill="none" stroke="#F6F5F2" stroke-width="12" stroke-linecap="round"/>
   <path d="M28 90 C28 108, 54 108, 70 98 C86 88, 86 72, 70 64 C54 56, 54 56, 54 56" fill="none" stroke="#0FBF8F" stroke-width="12" stroke-linecap="round"/>

@@ -1,3 +1,5 @@
+import { SettlementVisual } from "./SettlementVisual";
+
 type FinalCtaProps = { demoUrl: string };
 
 const journeySteps = [
@@ -18,6 +20,24 @@ const journeySteps = [
     title: "Deliver local currency",
     copy: "The contractor receives INR while the business receives one reconciled record.",
     tag: "INR payout · simulated",
+  },
+] as const;
+
+const safetyRules = [
+  {
+    code: "ID",
+    title: "Duplicate protected",
+    copy: "One payment cannot create two Arc transfers, even when a request is repeated.",
+  },
+  {
+    code: "0",
+    title: "Failed means failed",
+    copy: "Insufficient USDC balance produces SETTLEMENT_FAILED, never a misleading settled state.",
+  },
+  {
+    code: "✓",
+    title: "Delivery is callback-gated",
+    copy: "The payment reaches DELIVERED only after the authenticated payout callback succeeds.",
   },
 ] as const;
 
@@ -42,22 +62,45 @@ const arcReasons = [
 export function HowItWorks() {
   return (
     <section className="section-shell journey-section" id="how-it-works" aria-labelledby="how-it-works-title">
-      <div className="section-heading">
-        <p className="eyebrow">One traceable journey</p>
-        <h2 id="how-it-works-title">How Setula works</h2>
-        <p>One invoice, one payment reference, and a clear boundary between funding, settlement, and delivery.</p>
-      </div>
-      <div className="journey-grid">
+      <h2 className="sr-only" id="how-it-works-title">How Setula works</h2>
+
+      <div className="journey-highlights">
         {journeySteps.map((step) => (
-          <article className="journey-card" key={step.number}>
-            <span className="step-number">{step.number}</span>
+          <article className="journey-highlight" key={step.number}>
+            <span className="journey-orb" aria-hidden="true">{step.number}</span>
             <h3>{step.title}</h3>
             <p>{step.copy}</p>
-            <span className={step.number === "02" ? "scope-tag scope-tag-real" : "scope-tag"}>{step.tag}</span>
+            <span className={step.number === "02" ? "journey-scope journey-scope-real" : "journey-scope"}>{step.tag}</span>
           </article>
         ))}
       </div>
-      <SettlementVisual />
+
+      <div className="journey-feature">
+        <div className="journey-feature-copy">
+          <p className="eyebrow">Operational clarity</p>
+          <h3>Know what settled. Know what delivered.</h3>
+          <p>
+            Setula keeps funding, Arc settlement and local payout as separate states.
+            Finance teams can see exactly where a payment is—and prove it with one reconciled record.
+          </p>
+          <a className="button journey-proof-button" href="https://testnet.arcscan.app/tx/0x347ac773f6d280952fb84ad41347e0e8f543bc93262465904e0e55db022d4900">
+            View the ArcScan proof
+          </a>
+        </div>
+        <div className="journey-feature-visual">
+          <SettlementVisual />
+        </div>
+      </div>
+
+      <div className="safeguard-grid">
+        {safetyRules.map((rule) => (
+          <article className="safeguard" key={rule.title}>
+            <span className="safeguard-orb" aria-hidden="true">{rule.code}</span>
+            <h3>{rule.title}</h3>
+            <p>{rule.copy}</p>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
@@ -114,4 +157,3 @@ export function FinalCta({ demoUrl }: FinalCtaProps) {
     </section>
   );
 }
-import { SettlementVisual } from "./SettlementVisual";

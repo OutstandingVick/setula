@@ -289,8 +289,15 @@ function shell(content: string): string {
     <div class="app-shell">
       <header class="topbar">
         <button class="brand nav-button" type="button" data-new-payment aria-label="Setula home, start a new payment">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Setula</span>
+          <svg class="brand-logo" viewBox="0 0 320 90" aria-hidden="true">
+            <g transform="translate(0 5) scale(.62)">
+              <path d="M92 30 C92 12, 66 12, 50 22 C34 32, 34 48, 50 56 C66 64, 66 64, 66 64" fill="none" stroke="#0A1B2E" stroke-width="10" stroke-linecap="round" />
+              <path d="M28 90 C28 108, 54 108, 70 98 C86 88, 86 72, 70 64 C54 56, 54 56, 54 56" fill="none" stroke="#0FBF8F" stroke-width="10" stroke-linecap="round" />
+              <circle cx="60" cy="60" r="7" fill="#0A1B2E" />
+            </g>
+            <text x="86" y="56" font-family="Arial, sans-serif" font-weight="700" font-size="38" letter-spacing=".5" fill="#0A1B2E">setula</text>
+            <rect x="216" y="27" width="13" height="4" fill="#0FBF8F" />
+          </svg>
         </button>
         <nav class="nav-actions" aria-label="Payment navigation">
           <button class="nav-button" type="button" data-new-payment ${model.view === "details" ? 'aria-current="page"' : ""}>New payment</button>
@@ -310,57 +317,62 @@ function errorAlert(): string {
 
 function detailsView(): string {
   return shell(`
-    <main class="page" id="main-content">
-      <p class="eyebrow">New contractor payment</p>
-      <h1 tabindex="-1" data-screen-heading>Who are we paying?</h1>
-      <p class="lede">Create one invoice payment for the seeded India contractor. The contractor always receives the INR amount you enter.</p>
-      ${errorAlert()}
-      <div class="screen-grid">
-        <form class="card" data-payment-form novalidate>
-          <div class="card-body">
-            <h2>Invoice details</h2>
-            <div class="field-grid">
-              <div class="field">
-                <label for="invoice-reference">Invoice reference</label>
-                <input id="invoice-reference" name="reference" value="${escapeHtml(model.invoice?.reference ?? defaultReference)}" maxlength="80" required autocomplete="off" />
-              </div>
-              <div class="field">
-                <label for="invoice-amount">Recipient receives</label>
-                <div class="amount-input">
-                  <span>INR</span>
-                  <input id="invoice-amount" name="amount" value="${model.invoice ? (model.invoice.amountInrMinor / 100).toFixed(2) : landingPrefill ? (landingPrefill.amountInrMinor / 100).toFixed(2) : "1.00"}" inputmode="decimal" required aria-describedby="amount-help" />
-                </div>
-                <p class="helper" id="amount-help">${landingPrefill ? `Prefilled from the landing quote: ${escapeHtml(formatMinor(landingPrefill.amountAedMinor, "AED"))} → ${escapeHtml(formatMinor(landingPrefill.amountInrMinor, "INR"))}.` : "Fixed contractor payout amount. Use INR 1.00 for the 0.01 USDC demo settlement."}</p>
-              </div>
+    <main class="page payment-entry-page" id="main-content">
+      <section class="entry-shell" aria-labelledby="entry-title">
+        <header class="entry-hero">
+          <p class="entry-eyebrow">New contractor payment</p>
+          <h1 id="entry-title" tabindex="-1" data-screen-heading>Pay one contractor in India</h1>
+          <p class="entry-lede">Set the exact INR amount. Setula creates the invoice-linked quote and keeps every payment state reconciled.</p>
+          <div class="recipient-picker" aria-label="Fixed contractor beneficiary">
+            <div class="avatar" aria-hidden="true">AR</div>
+            <div class="recipient-copy">
+              <strong>${CONTRACTOR.name}</strong>
+              <span>India · ${CONTRACTOR.bank} · •••• ${CONTRACTOR.bankAccountLast4}</span>
             </div>
-            <div class="field">
-              <label for="invoice-description">What is this payment for?</label>
+            <span class="recipient-fixed">Fixed beneficiary</span>
+          </div>
+        </header>
+
+        <form class="entry-form" data-payment-form novalidate>
+          <div class="entry-form-body">
+            ${errorAlert()}
+            <div class="entry-guarantee">
+              <span aria-hidden="true">◇</span>
+              Sandbox quote generated next
+            </div>
+
+            <div class="entry-field entry-reference-field">
+              <label for="invoice-reference">Invoice reference</label>
+              <input id="invoice-reference" name="reference" value="${escapeHtml(model.invoice?.reference ?? defaultReference)}" maxlength="80" required autocomplete="off" />
+            </div>
+
+            <div class="entry-field entry-amount-field">
+              <label for="invoice-amount">Contractor receives exactly</label>
+              <div class="entry-amount-control">
+                <span class="currency-chip"><i aria-hidden="true">IN</i> INR</span>
+                <input id="invoice-amount" name="amount" value="${model.invoice ? (model.invoice.amountInrMinor / 100).toFixed(2) : landingPrefill ? (landingPrefill.amountInrMinor / 100).toFixed(2) : "1.00"}" inputmode="decimal" required aria-describedby="amount-help" />
+              </div>
+              <p class="entry-helper" id="amount-help">${landingPrefill ? `Prefilled from the landing quote: ${escapeHtml(formatMinor(landingPrefill.amountAedMinor, "AED"))} → ${escapeHtml(formatMinor(landingPrefill.amountInrMinor, "INR"))}.` : "Use INR 1.00 for the 0.01 USDC Arc Testnet demo settlement."}</p>
+            </div>
+
+            <div class="entry-field entry-purpose-field">
+              <label for="invoice-description">Payment purpose</label>
               <textarea id="invoice-description" name="description" maxlength="240" required>Brand identity design services</textarea>
             </div>
-            <div class="button-row">
-              <button class="button button-primary" type="submit" ${model.busy ? "disabled" : ""}>
-                ${model.busy === "Creating invoice and quote…" ? '<span class="spinner" aria-hidden="true"></span> Creating quote…' : "Continue to quote"}
-              </button>
+
+            <div class="entry-summary" aria-label="Payment rail summary">
+              <span class="entry-summary-icon" aria-hidden="true">→</span>
+              <div><small>Payment route</small><strong>AED funding → USDC on Arc → INR payout</strong></div>
+              <span class="entry-summary-tag">Hackathon sandbox</span>
             </div>
+
+            <button class="button entry-submit" type="submit" ${model.busy ? "disabled" : ""}>
+              ${model.busy === "Creating invoice and quote…" ? '<span class="spinner" aria-hidden="true"></span> Creating quote…' : "Continue to quote"}
+            </button>
+            <p class="entry-disclosure">AED funding and INR payout are simulated. Arc Testnet settlement executes only after approval.</p>
           </div>
         </form>
-        <aside class="card contractor-card" aria-label="Contractor summary">
-          <div class="card-body">
-            <div class="contractor-head">
-              <div class="avatar" aria-hidden="true">AR</div>
-              <div>
-                <p class="contractor-name">${CONTRACTOR.name}</p>
-                <span class="muted">India contractor</span>
-              </div>
-            </div>
-            <dl class="info-list">
-              <div class="info-row"><dt>Bank</dt><dd>${CONTRACTOR.bank}</dd></div>
-              <div class="info-row"><dt>Account</dt><dd>•••• ${CONTRACTOR.bankAccountLast4}</dd></div>
-              <div class="info-row"><dt>Payout</dt><dd>INR · simulated</dd></div>
-            </dl>
-          </div>
-        </aside>
-      </div>
+      </section>
     </main>`);
 }
 

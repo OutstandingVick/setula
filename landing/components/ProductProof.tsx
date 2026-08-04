@@ -1,3 +1,5 @@
+import { SetulaLogo } from "./SetulaLogo";
+
 const transactionHash = "0x347ac773f6d280952fb84ad41347e0e8f543bc93262465904e0e55db022d4900";
 const arcScanUrl = `https://testnet.arcscan.app/tx/${transactionHash}`;
 const paymentReference = "INV-SETULA-671C5954";
@@ -16,7 +18,7 @@ export function ProductProof() {
 
         <div className="dashboard-preview" aria-label="Setula payment record using validated Arc Testnet data">
           <aside className="preview-sidebar">
-            <span className="preview-brand"><i aria-hidden="true" /> Setula</span>
+            <SetulaLogo className="setula-logo preview-brand" theme="dark" />
             <span className="preview-nav active">Payment details</span>
             <span className="preview-nav">Receipt</span>
             <small>Hackathon sandbox</small>
