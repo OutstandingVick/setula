@@ -22,8 +22,10 @@ npm install
 npm start
 ```
 
-The backend listens at `http://127.0.0.1:4000` by default. Runtime data is
-persisted atomically to `.setula-data.json`.
+The backend binds to `0.0.0.0:4000` by default so deployment platforms can
+route traffic to it. It remains available locally at `http://127.0.0.1:4000`.
+Set `HOST` to override the bind address. Runtime data is persisted atomically
+to `.setula-data.json`.
 
 Open `http://127.0.0.1:4000` to run the browser journey:
 
