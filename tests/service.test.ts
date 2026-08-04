@@ -42,7 +42,7 @@ async function quotedPayment(service: SetulaService) {
     {
       beneficiaryId: beneficiary.id,
       reference: "INV-SETULA-001",
-      amountInrMinor: 100_000,
+      amountInrMinor: 9_100_000,
       description: "Design services",
     },
     "invoice-1",
@@ -68,6 +68,7 @@ describe("Setula backend golden path", () => {
     const service = new SetulaService(new MemoryStore(), gateway, CALLBACK_SECRET);
     const seeded = await pendingPayout(service);
 
+    expect(seeded.quote.usdcAmount).toBe("0.01");
     expect(seeded.payment.status).toBe("PAYOUT_PENDING");
     expect(seeded.payment.timeline.map(({ status }) => status)).toEqual([
       "DRAFT",

@@ -22,9 +22,9 @@ import type { Store } from "./store.js";
 
 const INR_PER_AED_NUMERATOR = 2_275n;
 const INR_PER_AED_DENOMINATOR = 100n;
-// Deterministic sandbox settlement rate: 100.00 INR per USDC. This lets the
-// validation invoice of 1.00 INR settle as exactly 0.01 USDC.
-const INR_PER_USDC_MINOR = 10_000n;
+// Deterministic hackathon proof mapping: the scoped INR 91,000 demo invoice
+// settles as exactly 0.01 USDC on Arc Testnet.
+export const INR_MINOR_PER_USDC = 910_000_000n;
 const QUOTE_TTL_MS = 15 * 60 * 1_000;
 
 type Clock = () => Date;
@@ -208,7 +208,7 @@ export class SetulaService {
         amountInrMinor * INR_PER_AED_DENOMINATOR,
         INR_PER_AED_NUMERATOR,
       );
-      const usdcBaseUnits = ceilDiv(amountInrMinor * 1_000_000n, INR_PER_USDC_MINOR);
+      const usdcBaseUnits = ceilDiv(amountInrMinor * 1_000_000n, INR_MINOR_PER_USDC);
       const createdAt = this.clock();
       const quote: Quote = {
         id: randomUUID(),

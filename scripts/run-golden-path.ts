@@ -15,7 +15,7 @@ import { createCircleClient, getUsdcBalance } from "../src/arc/circle.js";
 import { ARC_BLOCKCHAIN, loadSettlementConfig, loadWalletState } from "../src/arc/config.js";
 import { createHttpServer } from "../src/http.js";
 import { ArcCircleSettlementGateway } from "../src/settlement.js";
-import { SetulaService } from "../src/service.js";
+import { INR_MINOR_PER_USDC, SetulaService } from "../src/service.js";
 import { JsonFileStore } from "../src/store.js";
 
 const runtimeSchema = z.object({
@@ -134,7 +134,7 @@ async function main(): Promise<void> {
       {
         beneficiaryId: beneficiary.id,
         reference: `INV-SETULA-${runId}`,
-        amountInrMinor: 100,
+        amountInrMinor: 9_100_000,
         description: "Setula Arc Testnet validation invoice",
       },
       randomUUID(),
@@ -250,7 +250,7 @@ async function main(): Promise<void> {
     const senderAfterSuccess = await getUsdcBalance(circle, wallets.walletA.id);
     const attemptedFailureBaseUnits = senderAfterSuccess.baseUnits + 1_000_000n;
     const failureInvoiceMinor = Number(
-      ceilDiv(attemptedFailureBaseUnits * 10_000n, 1_000_000n),
+      ceilDiv(attemptedFailureBaseUnits * INR_MINOR_PER_USDC, 1_000_000n),
     );
     const failureInvoice = await post<Invoice>(
       "/api/invoices",

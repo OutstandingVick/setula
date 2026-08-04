@@ -74,8 +74,10 @@ requires `X-Payout-Callback-Secret` matching `PAYOUT_CALLBACK_SECRET`.
 | `GET` | `/api/receipts/:receiptId` | Read the invoice-linked receipt |
 
 Amounts ending in `Minor` are integer minor units: paise for INR and fils for
-AED. The sandbox rates are fixed at `22.75 INR/AED` and `100.00 INR/USDC` so a
-quote is deterministic and needs no external FX dependency.
+AED. The sandbox AED/INR rate is fixed at `22.75 INR/AED`, so the quote is
+deterministic and needs no external FX dependency. For the hackathon proof, the
+scoped INR 91,000 demo invoice maps to the required real `0.01 USDC` Arc Testnet
+settlement; this is not presented as a live INR/USDC market rate.
 
 ## Verify
 
