@@ -1,9 +1,13 @@
 import {
   ArrowRightLeft,
   CircleCheck,
+  CircleDollarSign,
   CircleX,
   CopyCheck,
   FileText,
+  Gauge,
+  ScanSearch,
+  ShieldCheck,
   Webhook,
 } from "lucide-react";
 import { SettlementVisual } from "./SettlementVisual";
@@ -64,10 +68,26 @@ const infrastructureLayers = [
 const futureApplications = ["Contractor payouts", "Supplier payments", "Tuition payments", "Family remittances"] as const;
 
 const arcReasons = [
-  ["USDC settlement", "The demonstrated payment moves USDC between payment-partner wallets on Arc Testnet."],
-  ["Predictable dollar costs", "Settlement value and network costs remain legible in dollar-denominated terms."],
-  ["Deterministic confirmation", "The payment advances only after Circle reports the successful terminal transaction state."],
-  ["Verifiable evidence", "A transaction hash and ArcScan record make settlement machine-checkable and publicly inspectable."],
+  {
+    icon: CircleDollarSign,
+    title: "USDC settlement",
+    copy: "The demonstrated payment moves USDC between payment-partner wallets on Arc Testnet.",
+  },
+  {
+    icon: Gauge,
+    title: "Predictable dollar costs",
+    copy: "Settlement value and network costs remain legible in dollar-denominated terms.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Deterministic confirmation",
+    copy: "The payment advances only after Circle reports the successful terminal transaction state.",
+  },
+  {
+    icon: ScanSearch,
+    title: "Verifiable evidence",
+    copy: "A transaction hash and ArcScan record make settlement machine-checkable and publicly inspectable.",
+  },
 ] as const;
 
 export function HowItWorks() {
@@ -158,9 +178,18 @@ export function WhyArc() {
         <p>Arc is the demonstrated USDC settlement rail. It does not perform the simulated AED funding or local INR delivery.</p>
       </div>
       <div className="reason-grid">
-        {arcReasons.map(([title, copy], index) => (
-          <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>
-        ))}
+        {arcReasons.map((reason) => {
+          const Icon = reason.icon;
+          return (
+            <article key={reason.title}>
+              <span className="reason-icon" aria-hidden="true">
+                <Icon strokeWidth={1.8} />
+              </span>
+              <h3>{reason.title}</h3>
+              <p>{reason.copy}</p>
+            </article>
+          );
+        })}
       </div>
       <p className="disclosure">Arc Testnet is used for this hackathon prototype; this page does not present it as production infrastructure.</p>
     </section>

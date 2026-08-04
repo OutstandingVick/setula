@@ -39,33 +39,42 @@ export default function LandingPage() {
 
       <footer className="site-footer">
         <div className="footer-shell">
-          <div className="footer-brand-row">
-            <SetulaLogo className="setula-logo setula-logo-footer" />
-            <div className="footer-status" aria-label="Prototype status">
+          <div className="footer-main">
+            <div className="footer-brand-block">
+              <SetulaLogo className="setula-logo setula-logo-footer" theme="dark" />
+              <p className="footer-tagline">Global payouts, made local.</p>
+              <p className="footer-summary">
+                Exact contractor payments with invoice-linked records and verifiable USDC settlement on Arc.
+              </p>
+              <a className="footer-demo-link" href={demoUrl}>Launch payment demo <span aria-hidden="true">↗</span></a>
+            </div>
+            <nav className="footer-nav" aria-label="Footer navigation">
+              <div className="footer-column">
+                <p>Product</p>
+                <a href="#how-it-works">How it works</a>
+                <a href="#infrastructure">Infrastructure</a>
+                <a href="#why-arc">Why Arc</a>
+                <a href={demoUrl}>Payment demo</a>
+              </div>
+              <div className="footer-column">
+                <p>Build &amp; proof</p>
+                <a href="https://github.com/OutstandingVick/setula">GitHub <span aria-hidden="true">↗</span></a>
+                <a href="https://testnet.arcscan.app/tx/0x347ac773f6d280952fb84ad41347e0e8f543bc93262465904e0e55db022d4900">ArcScan transaction <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/OutstandingVick/setula#readme">Documentation <span aria-hidden="true">↗</span></a>
+              </div>
+            </nav>
+          </div>
+
+          <div className="footer-status-row" aria-label="Prototype status">
+            <p><span className="footer-status-dot" aria-hidden="true" /> Validated prototype</p>
+            <div>
               <span>Arc Testnet</span>
+              <span>Real USDC settlement</span>
               <span>Fiat rails simulated</span>
             </div>
           </div>
 
-          <nav className="footer-links" aria-label="Footer navigation">
-            <a href="https://github.com/OutstandingVick/setula">
-              <span>01</span>
-              <strong>GitHub</strong>
-              <small>Source code and project history</small>
-            </a>
-            <a href="https://testnet.arcscan.app/tx/0x347ac773f6d280952fb84ad41347e0e8f543bc93262465904e0e55db022d4900">
-              <span>02</span>
-              <strong>ArcScan proof</strong>
-              <small>Inspect the validated settlement</small>
-            </a>
-            <a href="https://github.com/OutstandingVick/setula#readme">
-              <span>03</span>
-              <strong>Documentation</strong>
-              <small>Read the MVP scope and run guide</small>
-            </a>
-          </nav>
-
-          <div className="footer-disclosure">
+          <div className="footer-bottom">
             <p>© 2026 Setula</p>
             <p>
               Setula is a hackathon prototype, not a production payment service.
