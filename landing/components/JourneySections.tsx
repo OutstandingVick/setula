@@ -1,3 +1,11 @@
+import {
+  ArrowRightLeft,
+  CircleCheck,
+  CircleX,
+  CopyCheck,
+  FileText,
+  Webhook,
+} from "lucide-react";
 import { SettlementVisual } from "./SettlementVisual";
 
 type FinalCtaProps = { demoUrl: string };
@@ -5,18 +13,21 @@ type FinalCtaProps = { demoUrl: string };
 const journeySteps = [
   {
     number: "01",
+    icon: FileText,
     title: "Enter the invoice",
     copy: "Set the exact amount the contractor should receive.",
     tag: "AED funding · simulated",
   },
   {
     number: "02",
+    icon: ArrowRightLeft,
     title: "Settle through Arc",
     copy: "USDC moves between institutional payment partners under the hood.",
     tag: "Arc settlement · real",
   },
   {
     number: "03",
+    icon: CircleCheck,
     title: "Deliver local currency",
     copy: "The contractor receives INR while the business receives one reconciled record.",
     tag: "INR payout · simulated",
@@ -25,17 +36,17 @@ const journeySteps = [
 
 const safetyRules = [
   {
-    code: "ID",
+    icon: CopyCheck,
     title: "Duplicate protected",
     copy: "One payment cannot create two Arc transfers, even when a request is repeated.",
   },
   {
-    code: "0",
+    icon: CircleX,
     title: "Failed means failed",
     copy: "Insufficient USDC balance produces SETTLEMENT_FAILED, never a misleading settled state.",
   },
   {
-    code: "✓",
+    icon: Webhook,
     title: "Delivery is callback-gated",
     copy: "The payment reaches DELIVERED only after the authenticated payout callback succeeds.",
   },
@@ -65,14 +76,19 @@ export function HowItWorks() {
       <h2 className="sr-only" id="how-it-works-title">How Setula works</h2>
 
       <div className="journey-highlights">
-        {journeySteps.map((step) => (
-          <article className="journey-highlight" key={step.number}>
-            <span className="journey-orb" aria-hidden="true">{step.number}</span>
-            <h3>{step.title}</h3>
-            <p>{step.copy}</p>
-            <span className={step.number === "02" ? "journey-scope journey-scope-real" : "journey-scope"}>{step.tag}</span>
-          </article>
-        ))}
+        {journeySteps.map((step) => {
+          const Icon = step.icon;
+          return (
+            <article className="journey-highlight" key={step.number}>
+              <span className="journey-orb" aria-hidden="true">
+                <Icon strokeWidth={1.8} />
+              </span>
+              <h3>{step.title}</h3>
+              <p>{step.copy}</p>
+              <span className={step.number === "02" ? "journey-scope journey-scope-real" : "journey-scope"}>{step.tag}</span>
+            </article>
+          );
+        })}
       </div>
 
       <div className="journey-feature">
@@ -92,13 +108,18 @@ export function HowItWorks() {
       </div>
 
       <div className="safeguard-grid">
-        {safetyRules.map((rule) => (
-          <article className="safeguard" key={rule.title}>
-            <span className="safeguard-orb" aria-hidden="true">{rule.code}</span>
-            <h3>{rule.title}</h3>
-            <p>{rule.copy}</p>
-          </article>
-        ))}
+        {safetyRules.map((rule) => {
+          const Icon = rule.icon;
+          return (
+            <article className="safeguard" key={rule.title}>
+              <span className="safeguard-orb" aria-hidden="true">
+                <Icon strokeWidth={1.8} />
+              </span>
+              <h3>{rule.title}</h3>
+              <p>{rule.copy}</p>
+            </article>
+          );
+        })}
       </div>
     </section>
   );
