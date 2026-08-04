@@ -13,6 +13,6 @@ The payment-demo baseline was published separately as `73b7b45` (`feat: add paym
 | 7 | `feat: add Three.js settlement visualization` | `b2d012b` | Pushed to `origin/main` |
 | 8 | `feat: add product proof and failure recovery sections` | `ad91514` | Pushed to `origin/main` |
 | 9 | `fix: improve accessibility performance and responsive behavior` | `403f99e` | Pushed to `origin/main` |
-| 10 | `chore: complete landing page tests build and documentation` | Pending | Pending |
+| 10 | `chore: complete landing page tests build and documentation` | `108df81` | Pushed to `origin/main` |
 
 Because a Git commit cannot contain its own commit hash, each milestone hash is recorded by the following milestone. The tenth hash is recorded in one final progress-ledger commit after the ten implementation milestones.
