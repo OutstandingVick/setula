@@ -1,13 +1,13 @@
 import { Hero } from "../components/Hero";
+import {
+  FinalCta,
+  HowItWorks,
+  Infrastructure,
+  WhyArc,
+  WhySetulaIntro,
+} from "../components/JourneySections";
 
 const demoUrl = process.env.NEXT_PUBLIC_DEMO_URL ?? "http://127.0.0.1:4000";
-
-const sections = [
-  { id: "how-it-works", eyebrow: "One traceable journey", title: "How Setula works" },
-  { id: "why-setula", eyebrow: "Product proof", title: "From invoice to reconciled receipt" },
-  { id: "infrastructure", eyebrow: "Infrastructure", title: "One settlement layer. Multiple payment products." },
-  { id: "why-arc", eyebrow: "Why Arc", title: "Settlement evidence a system can verify" },
-] as const;
 
 export default function LandingPage() {
   return (
@@ -29,18 +29,23 @@ export default function LandingPage() {
 
       <main id="top">
         <Hero demoUrl={demoUrl} />
-
-        {sections.map((section) => (
-          <section className="section-shell" id={section.id} key={section.id} aria-labelledby={`${section.id}-title`}>
-            <p className="eyebrow">{section.eyebrow}</p>
-            <h2 id={`${section.id}-title`}>{section.title}</h2>
-          </section>
-        ))}
+        <HowItWorks />
+        <WhySetulaIntro />
+        <Infrastructure />
+        <WhyArc />
+        <FinalCta demoUrl={demoUrl} />
       </main>
 
       <footer className="footer-shell">
-        <span className="wordmark">Setula</span>
-        <p>Arc Testnet prototype. Fiat entry and payout rails are simulated.</p>
+        <div>
+          <span className="wordmark">Setula</span>
+          <p>Hackathon prototype · not a production payment service.</p>
+        </div>
+        <nav className="footer-links" aria-label="Footer navigation">
+          <a href="https://github.com/OutstandingVick/setula">GitHub</a>
+          <a href="https://testnet.arcscan.app/tx/0x347ac773f6d280952fb84ad41347e0e8f543bc93262465904e0e55db022d4900">ArcScan proof</a>
+          <a href="#infrastructure">Documentation</a>
+        </nav>
       </footer>
     </>
   );
