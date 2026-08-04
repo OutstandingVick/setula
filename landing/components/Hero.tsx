@@ -17,7 +17,6 @@ export function Hero({ demoUrl }: HeroProps) {
   return (
     <section className="hero-shell" aria-labelledby="landing-title">
       <div className="hero-copy">
-        <p className="eyebrow">Cross-border contractor payments</p>
         <h1 id="landing-title">Pay in AED. They receive local currency.</h1>
         <p className="lede">
           Setula helps UAE agencies pay overseas contractors with exact recipient amounts,

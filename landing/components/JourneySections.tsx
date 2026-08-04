@@ -77,8 +77,7 @@ export function HowItWorks() {
 
       <div className="journey-feature">
         <div className="journey-feature-copy">
-          <p className="eyebrow">Operational clarity</p>
-          <h3>Know what settled. Know what delivered.</h3>
+          <h3>Settled. Delivered. Verified.</h3>
           <p>
             Setula keeps funding, Arc settlement and local payout as separate states.
             Finance teams can see exactly where a payment is—and prove it with one reconciled record.
