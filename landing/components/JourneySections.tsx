@@ -62,18 +62,6 @@ export function HowItWorks() {
   );
 }
 
-export function WhySetulaIntro() {
-  return (
-    <section className="section-shell proof-intro" id="why-setula" aria-labelledby="why-setula-title">
-      <div className="section-heading">
-        <p className="eyebrow">Why Setula</p>
-        <h2 id="why-setula-title">Settlement and delivery are not the same event.</h2>
-      </div>
-      <p className="feature-lede">Setula preserves that distinction in the payment state, evidence, and receipt—so a completed onchain transfer can never masquerade as a delivered contractor payout.</p>
-    </section>
-  );
-}
-
 export function Infrastructure() {
   return (
     <section className="section-shell infrastructure-section" id="infrastructure" aria-labelledby="infrastructure-title">

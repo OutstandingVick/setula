@@ -4,8 +4,8 @@ import {
   HowItWorks,
   Infrastructure,
   WhyArc,
-  WhySetulaIntro,
 } from "../components/JourneySections";
+import { ProductProof } from "../components/ProductProof";
 
 const demoUrl = process.env.NEXT_PUBLIC_DEMO_URL ?? "http://127.0.0.1:4000";
 
@@ -30,7 +30,7 @@ export default function LandingPage() {
       <main id="top">
         <Hero demoUrl={demoUrl} />
         <HowItWorks />
-        <WhySetulaIntro />
+        <ProductProof />
         <Infrastructure />
         <WhyArc />
         <FinalCta demoUrl={demoUrl} />
