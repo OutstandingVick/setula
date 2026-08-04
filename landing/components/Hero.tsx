@@ -24,6 +24,15 @@ export function Hero({ demoUrl }: HeroProps) {
   const quote = useMemo(() => calculateSandboxQuote(aedInput), [aedInput]);
   const inputError = quote === null ? "Enter an AED amount greater than 0 and no more than 1,000,000." : undefined;
   const receiveValue = quote ? formatMinor(quote.amountInrMinor, "INR") : "—";
+  const continueUrl = useMemo(() => {
+    if (!quote) return undefined;
+    const params = new URLSearchParams({
+      aedMinor: quote.amountAedMinor.toString(),
+      inrMinor: quote.amountInrMinor.toString(),
+      source: "landing-quote",
+    });
+    return `${demoUrl}${demoUrl.includes("?") ? "&" : "?"}${params.toString()}`;
+  }, [demoUrl, quote]);
 
   return (
     <section className="hero-shell" aria-labelledby="landing-title">
@@ -35,7 +44,7 @@ export function Hero({ demoUrl }: HeroProps) {
           invoice-linked records and verifiable USDC settlement on Arc.
         </p>
         <div className="hero-actions">
-          <a className="button" href={demoUrl}>Launch payment demo</a>
+          <a className="button" href={continueUrl ?? demoUrl}>Launch payment demo</a>
           <a className="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
         </div>
         <p className="trust-line">
@@ -95,7 +104,7 @@ export function Hero({ demoUrl }: HeroProps) {
           ))}
         </dl>
 
-        <a className={`button quote-button${inputError ? " button-disabled" : ""}`} href={inputError ? undefined : demoUrl} aria-disabled={inputError ? "true" : undefined} aria-describedby="hero-static-note">Continue to demo</a>
+        <a className={`button quote-button${inputError ? " button-disabled" : ""}`} href={continueUrl} aria-disabled={inputError ? "true" : undefined} aria-describedby="hero-static-note">Continue to demo</a>
         <p className="quote-note" id="hero-static-note">Quote uses the fixed hackathon sandbox rate.</p>
       </div>
     </section>

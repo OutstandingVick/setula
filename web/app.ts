@@ -139,6 +139,11 @@ type Model = {
   busy?: string | undefined;
 };
 
+type LandingPrefill = {
+  amountAedMinor: number;
+  amountInrMinor: number;
+};
+
 const appRoot = document.querySelector<HTMLDivElement>("#app");
 if (!appRoot) throw new Error("Setula app root is missing");
 const app: HTMLDivElement = appRoot;
@@ -156,6 +161,22 @@ let defaultReference = `INV-SET-${runId.slice(0, 6).toUpperCase()}`;
 let model: Model = { view: "details" };
 let expiryTimer: number | undefined;
 const inFlight = new Map<string, Promise<unknown>>();
+
+function readLandingPrefill(): LandingPrefill | undefined {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("source") !== "landing-quote") return undefined;
+  const aedMinor = Number(params.get("aedMinor"));
+  const inrMinor = Number(params.get("inrMinor"));
+  if (
+    !Number.isSafeInteger(aedMinor) ||
+    !Number.isSafeInteger(inrMinor) ||
+    aedMinor <= 0 ||
+    inrMinor <= 0
+  ) return undefined;
+  return { amountAedMinor: aedMinor, amountInrMinor: inrMinor };
+}
+
+let landingPrefill = readLandingPrefill();
 
 function escapeHtml(value: unknown): string {
   return String(value)
@@ -307,9 +328,9 @@ function detailsView(): string {
                 <label for="invoice-amount">Recipient receives</label>
                 <div class="amount-input">
                   <span>INR</span>
-                  <input id="invoice-amount" name="amount" value="${model.invoice ? (model.invoice.amountInrMinor / 100).toFixed(2) : "1.00"}" inputmode="decimal" required aria-describedby="amount-help" />
+                  <input id="invoice-amount" name="amount" value="${model.invoice ? (model.invoice.amountInrMinor / 100).toFixed(2) : landingPrefill ? (landingPrefill.amountInrMinor / 100).toFixed(2) : "1.00"}" inputmode="decimal" required aria-describedby="amount-help" />
                 </div>
-                <p class="helper" id="amount-help">Fixed contractor payout amount. Use INR 1.00 for the 0.01 USDC demo settlement.</p>
+                <p class="helper" id="amount-help">${landingPrefill ? `Prefilled from the landing quote: ${escapeHtml(formatMinor(landingPrefill.amountAedMinor, "AED"))} → ${escapeHtml(formatMinor(landingPrefill.amountInrMinor, "INR"))}.` : "Fixed contractor payout amount. Use INR 1.00 for the 0.01 USDC demo settlement."}</p>
               </div>
             </div>
             <div class="field">
@@ -565,6 +586,7 @@ function resetPayment(): void {
   runId = crypto.randomUUID();
   sessionStorage.setItem("setula:run-id", runId);
   defaultReference = `INV-SET-${runId.slice(0, 6).toUpperCase()}`;
+  landingPrefill = undefined;
   if (window.location.search) window.history.replaceState({}, "", "/");
   model = { view: "details" };
   render(true);
