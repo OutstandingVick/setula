@@ -33,7 +33,24 @@ Values are intentionally omitted.
 
 ## Five-run results
 
-Pending deployment.
+Every run observed, in order:
+
+`DRAFT → QUOTED → FUNDED → SETTLEMENT_PENDING → SETTLED → PAYOUT_PENDING → DELIVERED`
+
+| Run | Payment reference | Circle status | Transaction hash / ArcScan | Final state | Receipt ID | References match |
+| ---: | --- | --- | --- | --- | --- | --- |
+| 1 | `INV-SETULA-BA366676` | `COMPLETE` | [`0x5ec54a157d4fd8bf60371ecd346ba37c9b8f3ab16074e79a30f473921e286117`](https://testnet.arcscan.app/tx/0x5ec54a157d4fd8bf60371ecd346ba37c9b8f3ab16074e79a30f473921e286117) | `DELIVERED` | `0a528fcc-aa20-468b-afe8-6964b57fa8aa` | Yes |
+| 2 | `INV-SETULA-E250F246` | `COMPLETE` | [`0xfa127f8f6ac613b4c2e332e5da102d5bef76585daee258d6c50895be4fd88f4d`](https://testnet.arcscan.app/tx/0xfa127f8f6ac613b4c2e332e5da102d5bef76585daee258d6c50895be4fd88f4d) | `DELIVERED` | `6d264e9b-3364-4b44-b795-c068281481a9` | Yes |
+| 3 | `INV-SETULA-8DF36523` | `COMPLETE` | [`0x611c9144aff5d38b85a5e98bf3cc0becb80f45cc19b3cf80ea8a331a03a0ea5f`](https://testnet.arcscan.app/tx/0x611c9144aff5d38b85a5e98bf3cc0becb80f45cc19b3cf80ea8a331a03a0ea5f) | `DELIVERED` | `3389814f-03bc-46bc-ade4-ccb3af11682e` | Yes |
+| 4 | `INV-SETULA-54805388` | `COMPLETE` | [`0xcfcf274b47e7e1483ef86d50d5a14fc64f342958de4e1244b76aa527490a0367`](https://testnet.arcscan.app/tx/0xcfcf274b47e7e1483ef86d50d5a14fc64f342958de4e1244b76aa527490a0367) | `DELIVERED` | `548f825e-b731-4f5f-864e-c18d628b9650` | Yes |
+| 5 | `INV-SETULA-9261B6EF` | `COMPLETE` | [`0xe1f45014072cbd531007c72c814fd39a4984f2d6d46fdd1743e2519e16332e3c`](https://testnet.arcscan.app/tx/0xe1f45014072cbd531007c72c814fd39a4984f2d6d46fdd1743e2519e16332e3c) | `DELIVERED` | `2983cb4a-5dc0-4b73-ba94-5c0f76cdfc01` | Yes |
+
+All five runs used unique payment references and generated unique request
+idempotency keys. Each ArcScan page returned HTTP `200`. Duplicate settlement
+submissions retained the original Circle transaction and hash with recipient
+duplicate delta `0`. Each run also exercised the insufficient-balance path:
+final state `SETTLEMENT_FAILED`, never `SETTLED`, payout callback rejected,
+no ArcScan link, and recipient delta `0`.
 
 ## Desktop and mobile QA
 
@@ -51,5 +68,4 @@ Pending deployment.
 
 ## Remaining blockers
 
-Five consecutive golden-path runs, responsive QA, and the secret scan remain in
-progress.
+Responsive QA and the secret scan remain in progress.
