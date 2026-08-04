@@ -6,10 +6,10 @@ Date: 2026-08-04
 
 | Field | Result |
 | --- | --- |
-| Frontend URL | Pending |
-| Backend URL | Pending |
+| Frontend URL | https://problems-danny-juice-conduct.trycloudflare.com |
+| Backend URL | https://argue-scale-smoking-regular.trycloudflare.com |
 | Branch | `main` |
-| Validation baseline commit | `3aa1215d073858d2b2e50809baa3b3dd129a6df9` |
+| Deployed commit | `748aa03` |
 | Deployment method | Public Cloudflare validation tunnels |
 
 ## Environment variables configured
@@ -21,7 +21,15 @@ Values are intentionally omitted.
 
 ## Route checks
 
-Pending deployment.
+| Check | Result |
+| --- | --- |
+| Frontend `/` | `200 text/html` |
+| Frontend `/pay` | `200 text/html` |
+| `/pay/styles.css` | `200 text/css` |
+| `/pay/app.js` | `200 text/javascript` |
+| `/pay/favicon.svg` | `200 image/svg+xml` |
+| Backend `/health` | `200 application/json`, `{"status":"ok"}` |
+| Frontend API proxy | Reached backend and returned backend JSON `404 Payment not found` for a deliberately unknown UUID |
 
 ## Five-run results
 
@@ -33,7 +41,9 @@ Pending deployment.
 
 ## Performance issues
 
-Pending deployment.
+Initial uncached tunnel responses ranged from approximately `0.66s` to `2.60s`.
+No asset failures were observed. Account-less validation tunnels have no uptime
+guarantee and are not a durable production host.
 
 ## Secret scan
 
@@ -41,4 +51,5 @@ Pending deployment.
 
 ## Remaining blockers
 
-Public deployment and validation are in progress.
+Five consecutive golden-path runs, responsive QA, and the secret scan remain in
+progress.
