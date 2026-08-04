@@ -34,6 +34,17 @@ export function Hero({ demoUrl }: HeroProps) {
     return `${demoUrl}${demoUrl.includes("?") ? "&" : "?"}${params.toString()}`;
   }, [demoUrl, quote]);
 
+  function updateAmount(nextValue: string): void {
+    const sanitized = sanitizeAedInput(nextValue);
+    setAedInput(sanitized);
+    const nextQuote = calculateSandboxQuote(sanitized);
+    if (nextQuote) {
+      window.dispatchEvent(new CustomEvent("setula:quote", {
+        detail: { amountAedMinor: Number(nextQuote.amountAedMinor) },
+      }));
+    }
+  }
+
   return (
     <section className="hero-shell" aria-labelledby="landing-title">
       <div className="hero-copy">
@@ -68,7 +79,7 @@ export function Hero({ demoUrl }: HeroProps) {
             <input
               id="hero-send"
               value={aedInput}
-              onChange={(event) => setAedInput(sanitizeAedInput(event.target.value))}
+              onChange={(event) => updateAmount(event.target.value)}
               onBlur={() => {
                 if (quote) setAedInput(formatMinor(quote.amountAedMinor, "AED").replaceAll(",", ""));
               }}
