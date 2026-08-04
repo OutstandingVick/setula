@@ -1,3 +1,5 @@
+import { Hero } from "../components/Hero";
+
 const demoUrl = process.env.NEXT_PUBLIC_DEMO_URL ?? "http://127.0.0.1:4000";
 
 const sections = [
@@ -26,16 +28,7 @@ export default function LandingPage() {
       </header>
 
       <main id="top">
-        <section className="hero-shell" aria-labelledby="landing-title">
-          <div className="hero-placeholder">
-            <p className="eyebrow">Cross-border contractor payments</p>
-            <h1 id="landing-title">Pay in AED. They receive local currency.</h1>
-            <p className="lede">A focused payment journey for UAE agencies and overseas contractors.</p>
-          </div>
-          <div className="product-placeholder" aria-label="Interactive quote calculator area">
-            <span>Sandbox AED → INR quote</span>
-          </div>
-        </section>
+        <Hero demoUrl={demoUrl} />
 
         {sections.map((section) => (
           <section className="section-shell" id={section.id} key={section.id} aria-labelledby={`${section.id}-title`}>
