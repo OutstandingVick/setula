@@ -47,9 +47,10 @@ cd /Users/macbook/setula
 npm run dev:landing
 ```
 
-Open `http://localhost:3001`. The calculator passes validated AED and INR
-minor-unit values into the existing backend-served demo. Set
-`NEXT_PUBLIC_DEMO_URL` only when the backend is hosted somewhere other than
+Open `http://localhost:3001`. The hero shows a static preview of the contractor
+payment screen. Its primary call to action opens the backend-served demo with
+the fixed sandbox AED and INR quote encoded as validated minor-unit values. Set
+`NEXT_PUBLIC_DEMO_URL` when the backend is hosted somewhere other than
 `http://127.0.0.1:4000`.
 
 ## API routes
@@ -85,5 +86,8 @@ npm run build:landing
 ```
 
 Automated tests inject a settlement gateway and never spend Arc Testnet USDC.
+The current suite contains 16 tests covering the backend state machine,
+idempotency and failure paths, reference integrity, and landing quote-link
+utilities.
 The runtime server uses the real Circle/Arc adapter ported from
 `setula-arc-spike`.
