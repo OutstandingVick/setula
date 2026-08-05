@@ -35,6 +35,16 @@ const demoPayoutSchema = z.object({
   status: z.enum(["DELIVERED", "REJECTED"]).default("DELIVERED"),
 });
 
+function setCors(request: IncomingMessage, response: ServerResponse, allowedOrigins: readonly string[]): void {
+  const origin = request.headers["origin"];
+  if (!origin) return;
+  if (allowedOrigins.includes(origin)) {
+    response.setHeader("access-control-allow-origin", origin);
+    response.setHeader("access-control-allow-methods", "GET,POST,OPTIONS");
+    response.setHeader("access-control-allow-headers", "content-type,idempotency-key,x-payout-callback-secret");
+  }
+}
+
 function send(response: ServerResponse, statusCode: number, body: unknown): void {
   response.writeHead(statusCode, { "content-type": "application/json; charset=utf-8" });
   response.end(`${JSON.stringify(body)}\n`);
@@ -80,9 +90,16 @@ function idempotencyKey(request: IncomingMessage): string {
   return Array.isArray(value) ? (value[0] ?? "") : (value ?? "");
 }
 
-export function createHttpServer(service: SetulaService) {
+export function createHttpServer(service: SetulaService, allowedOrigins: readonly string[] = []) {
   return createServer(async (request, response) => {
     try {
+      setCors(request, response, allowedOrigins);
+
+      if (request.method === "OPTIONS") {
+        response.writeHead(204);
+        response.end();
+        return;
+      }
       const method = request.method ?? "GET";
       const url = new URL(request.url ?? "/", "http://localhost");
       const path = url.pathname;
