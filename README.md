@@ -6,6 +6,37 @@ Arc Testnet through Circle developer-controlled wallets.
 
 The binding product boundary is [`MVP_SCOPE.md`](./MVP_SCOPE.md).
 
+## Stable deployment
+
+| Link | URL |
+| --- | --- |
+| Frontend | https://setula.vercel.app |
+| Backend health | https://ideal-alignment-production-912d.up.railway.app/health |
+
+AED funding and INR delivery are simulated demo flows. USDC settlement on Arc
+Testnet is a real on-chain transfer. See
+[`STABLE_DEPLOYMENT_VALIDATION.md`](./STABLE_DEPLOYMENT_VALIDATION.md) for the
+latest deployed validation run.
+
+## Deployment architecture
+
+```
+Browser ──→ Vercel (Next.js landing page)
+              │  /pay/*  ──→ Railway backend (Node.js HTTP server)
+              │  /api/*  ──→ Railway backend
+              │
+              └── Next.js rewrites proxy to DEMO_BACKEND_ORIGIN
+```
+
+- **Frontend**: Vercel hosts the Next.js 16 landing page. All `/pay/` and `/api/`
+  requests are proxied through Next.js `rewrites()` to the Railway backend.
+  The browser sees a single origin; no CORS is required in the normal flow.
+- **Backend**: Railway runs the raw `node:http` server (`npm run start:prod`).
+  It serves the payment demo static files and all API routes on a single port
+  (`process.env.PORT`, assigned by Railway).
+- **Circle/Arc**: All Circle API calls are made server-side from Railway. The
+  browser never receives Circle credentials or the payout callback secret.
+
 ## Requirements
 
 - Node.js 22 or newer
@@ -14,7 +45,7 @@ The binding product boundary is [`MVP_SCOPE.md`](./MVP_SCOPE.md).
 
 Copy `.env.example` to `.env` and populate it locally. Never commit `.env`.
 
-## Run
+## Local development
 
 ```sh
 cd /Users/macbook/setula
