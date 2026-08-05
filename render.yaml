@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: setula-backend
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build:web
+    startCommand: npm run start:prod
+    nodeVersion: "22"
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: DATA_FILE
+        value: .setula-data.json
+      - key: POLL_INTERVAL_MS
+        value: "2000"
+      - key: POLL_TIMEOUT_MS
+        value: "180000"
+      - key: CIRCLE_BLOCKCHAIN
+        value: ARC-TESTNET
+      - key: CIRCLE_API_KEY
+        sync: false
+      - key: CIRCLE_ENTITY_SECRET
+        sync: false
+      - key: CIRCLE_WALLET_A_ID
+        sync: false
+      - key: CIRCLE_WALLET_A_ADDRESS
+        sync: false
+      - key: CIRCLE_WALLET_B_ID
+        sync: false
+      - key: CIRCLE_WALLET_B_ADDRESS
+        sync: false
+      - key: CIRCLE_USDC_TOKEN_ID
+        sync: false
+      - key: PAYOUT_CALLBACK_SECRET
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false

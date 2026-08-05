@@ -1,0 +1,6 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build:landing",
+  "installCommand": "npm install",
+  "outputDirectory": "landing/.next"
+}
