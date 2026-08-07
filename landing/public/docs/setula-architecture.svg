@@ -1,0 +1,275 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 740" width="1280" height="740" style="background:#f5f5f0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif">
+  <defs>
+    <marker id="arrow-real" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#0a1b2e"/>
+    </marker>
+    <marker id="arrow-sim" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#667085"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#0fbf8f"/>
+    </marker>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0a1b2e" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="30" y="38" font-size="22" font-weight="750" fill="#0a1b2e" letter-spacing="-0.03em">Setula Architecture</text>
+  <text x="30" y="58" font-size="12" fill="#667085">Cross-border contractor payment — hackathon MVP</text>
+
+  <!-- Column labels -->
+  <text x="30" y="90" font-size="11" font-weight="800" fill="#667085" letter-spacing="0.08em" text-anchor="middle">USER</text>
+  <text x="220" y="90" font-size="11" font-weight="800" fill="#667085" letter-spacing="0.08em" text-anchor="middle">SETULA PRODUCT</text>
+  <text x="445" y="90" font-size="11" font-weight="800" fill="#667085" letter-spacing="0.08em" text-anchor="middle">SETULA BACKEND</text>
+  <text x="675" y="90" font-size="11" font-weight="800" fill="#667085" letter-spacing="0.08em" text-anchor="middle">SETTLEMENT</text>
+  <text x="920" y="90" font-size="11" font-weight="800" fill="#667085" letter-spacing="0.08em" text-anchor="middle">FIAT RAILS</text>
+
+  <!-- Real / Simulated labels -->
+  <text x="675" y="67" font-size="10" font-weight="800" fill="#0a755b" letter-spacing="0.1em" text-anchor="middle">REAL</text>
+  <text x="920" y="67" font-size="10" font-weight="800" fill="#667085" letter-spacing="0.1em" text-anchor="middle">SIMULATED</text>
+
+  <!-- Deployment labels -->
+  <text x="220" y="70" font-size="10" font-weight="700" fill="#667085" letter-spacing="0.06em" text-anchor="middle">Vercel</text>
+  <text x="445" y="70" font-size="10" font-weight="700" fill="#667085" letter-spacing="0.06em" text-anchor="middle">Railway</text>
+
+  <!-- ═══════════ COLUMN 1: USER ═══════════ -->
+  <!-- User box -->
+  <rect x="30" y="104" width="150" height="180" rx="12" fill="#ffffff" stroke="rgba(10,27,46,0.12)" filter="url(#shadow)"/>
+  <circle cx="105" cy="142" r="20" fill="#effaf6" stroke="#0fbf8f" stroke-width="1.5"/>
+  <text x="105" y="148" font-size="16" fill="#0a755b" text-anchor="middle" font-weight="700">UA</text>
+  <text x="105" y="188" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">UAE Agency</text>
+  <text x="105" y="206" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">Finance Manager</text>
+  <text x="105" y="236" font-size="11" fill="#667085" text-anchor="middle">Approves AED payment</text>
+  <text x="105" y="254" font-size="11" fill="#667085" text-anchor="middle">Tracks settlement</text>
+
+  <!-- ═══════════ COLUMN 2: FRONTEND ═══════════ -->
+  <!-- Landing & Payment -->
+  <rect x="200" y="104" width="210" height="54" rx="8" fill="#ffffff" stroke="rgba(10,27,46,0.16)" filter="url(#shadow)"/>
+  <text x="305" y="128" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">Landing Page</text>
+  <text x="305" y="146" font-size="11" fill="#667085" text-anchor="middle">Invoice preview &amp; quote calculator</text>
+
+  <!-- Down arrow -->
+  <line x1="305" y1="160" x2="305" y2="175" stroke="#667085" stroke-width="1.2" marker-end="url(#arrow-sim)"/>
+
+  <!-- Payment Flow -->
+  <rect x="200" y="177" width="210" height="54" rx="8" fill="#ffffff" stroke="rgba(10,27,46,0.16)" filter="url(#shadow)"/>
+  <text x="305" y="201" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">Payment Form</text>
+  <text x="305" y="219" font-size="11" fill="#667085" text-anchor="middle">Quote approval &amp; settlement initiation</text>
+
+  <!-- Down arrow -->
+  <line x1="305" y1="233" x2="305" y2="248" stroke="#667085" stroke-width="1.2" marker-end="url(#arrow-sim)"/>
+
+  <!-- Progress & Receipt -->
+  <rect x="200" y="250" width="210" height="54" rx="8" fill="#ffffff" stroke="rgba(10,27,46,0.16)" filter="url(#shadow)"/>
+  <text x="305" y="274" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">Progress &amp; Receipt UI</text>
+  <text x="305" y="292" font-size="11" fill="#667085" text-anchor="middle">State timeline, ArcScan link, receipt</text>
+
+  <!-- ═══════════ COLUMN 3: BACKEND ═══════════ -->
+  <!-- Orchestrator -->
+  <rect x="425" y="104" width="225" height="48" rx="8" fill="#ffffff" stroke="rgba(15,191,143,0.3)" filter="url(#shadow)"/>
+  <text x="537" y="126" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">Payment Orchestrator</text>
+  <text x="537" y="143" font-size="10" fill="#667085" text-anchor="middle">Quote → Fund → Settle → Payout</text>
+
+  <!-- Down arrow -->
+  <line x1="537" y1="154" x2="537" y2="169" stroke="#0fbf8f" stroke-width="1.2" marker-end="url(#arrow-teal)"/>
+
+  <!-- State Machine -->
+  <rect x="425" y="171" width="225" height="48" rx="8" fill="#ffffff" stroke="rgba(15,191,143,0.3)" filter="url(#shadow)"/>
+  <text x="537" y="193" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">State Machine</text>
+  <text x="537" y="210" font-size="10" fill="#667085" text-anchor="middle">DRAFT → DELIVERED transition rules</text>
+
+  <!-- Down arrow -->
+  <line x1="537" y1="221" x2="537" y2="236" stroke="#0fbf8f" stroke-width="1.2" marker-end="url(#arrow-teal)"/>
+
+  <!-- Settlement Adapter + Idempotency -->
+  <rect x="425" y="238" width="225" height="65" rx="8" fill="#ffffff" stroke="rgba(15,191,143,0.3)" filter="url(#shadow)"/>
+  <text x="537" y="260" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">Settlement Adapter</text>
+  <text x="537" y="276" font-size="10" fill="#667085" text-anchor="middle">Circle transfer · Idempotency guard</text>
+  <text x="537" y="292" font-size="10" fill="#667085" text-anchor="middle">Reference matching · Balance check</text>
+
+  <!-- ═══════════ COLUMN 4: SETTLEMENT ═══════════ -->
+  <!-- Settlement dark background container -->
+  <rect x="650" y="104" width="225" height="199" rx="14" fill="#0a1b2e"/>
+
+  <!-- Circle Wallet -->
+  <rect x="664" y="114" width="197" height="44" rx="8" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.12)"/>
+  <text x="762" y="134" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Circle Dev-Controlled Wallet</text>
+  <text x="762" y="150" font-size="10" fill="rgba(255,255,255,0.48)" text-anchor="middle">Programmable Wallets SDK 10.8</text>
+
+  <!-- Down arrow -->
+  <line x1="762" y1="160" x2="762" y2="175" stroke="rgba(255,255,255,0.3)" stroke-width="1" marker-end="url(#arrow-teal)"/>
+
+  <!-- USDC -->
+  <rect x="664" y="177" width="197" height="44" rx="8" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.12)"/>
+  <text x="762" y="197" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">USDC Transfer</text>
+  <text x="762" y="213" font-size="10" fill="rgba(255,255,255,0.48)" text-anchor="middle">0.01 USDC · Arc Testnet</text>
+
+  <!-- Down arrow -->
+  <line x1="762" y1="223" x2="762" y2="238" stroke="rgba(255,255,255,0.3)" stroke-width="1" marker-end="url(#arrow-teal)"/>
+
+  <!-- ArcScan -->
+  <rect x="664" y="240" width="197" height="44" rx="8" fill="rgba(15,191,143,0.12)" stroke="rgba(15,191,143,0.3)"/>
+  <text x="762" y="260" font-size="11" font-weight="700" fill="#67d9b8" text-anchor="middle">ArcScan Evidence</text>
+  <text x="762" y="276" font-size="10" fill="rgba(103,217,184,0.65)" text-anchor="middle">tx/0xd033…b2afec ♦</text>
+
+  <!-- ═══════════ COLUMN 5: FIAT RAILS ═══════════ -->
+  <!-- UAE Funding Partner -->
+  <rect x="895" y="104" width="210" height="54" rx="8" fill="#ffffff" stroke="#667085" stroke-dasharray="5,3" filter="url(#shadow)"/>
+  <rect x="901" y="108" width="52" height="16" rx="4" fill="#667085"/>
+  <text x="927" y="119" font-size="8" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.06em">SIMULATED</text>
+  <text x="1000" y="130" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">UAE Funding Partner</text>
+  <text x="1000" y="148" font-size="10" fill="#667085" text-anchor="middle">AED collection (future)</text>
+
+  <!-- Down arrow (dashed) -->
+  <line x1="1000" y1="160" x2="1000" y2="185" stroke="#667085" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-sim)"/>
+
+  <!-- India Payout Partner -->
+  <rect x="895" y="187" width="210" height="54" rx="8" fill="#ffffff" stroke="#667085" stroke-dasharray="5,3" filter="url(#shadow)"/>
+  <rect x="901" y="191" width="52" height="16" rx="4" fill="#667085"/>
+  <text x="927" y="202" font-size="8" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.06em">SIMULATED</text>
+  <text x="1000" y="213" font-size="12" font-weight="700" fill="#0a1b2e" text-anchor="middle">India Payout Partner</text>
+  <text x="1000" y="231" font-size="10" fill="#667085" text-anchor="middle">INR bank delivery (future)</text>
+
+  <!-- Down arrow (dashed) -->
+  <line x1="1000" y1="243" x2="1000" y2="268" stroke="#667085" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-sim)"/>
+
+  <!-- Contractor receives INR -->
+  <rect x="895" y="270" width="210" height="42" rx="8" fill="#effaf6" stroke="#0fbf8f" stroke-width="1.2" filter="url(#shadow)"/>
+  <text x="1000" y="295" font-size="12" font-weight="700" fill="#0a755b" text-anchor="middle">Contractor receives INR</text>
+
+  <!-- ═══════════ HORIZONTAL FLOW ARROWS ═══════════ -->
+  <!-- Col1 → Col2 (User → Frontend) -->
+  <line x1="180" y1="194" x2="196" y2="194" stroke="#0a1b2e" stroke-width="1.5" marker-end="url(#arrow-real)"/>
+
+  <!-- Col2 → Col3 (Frontend → Backend) -->
+  <line x1="410" y1="230" x2="421" y2="230" stroke="#0a1b2e" stroke-width="1.5" marker-end="url(#arrow-real)"/>
+
+  <!-- Col3 → Col4 (Backend → Settlement) -->
+  <line x1="650" y1="230" x2="660" y2="230" stroke="#0fbf8f" stroke-width="1.5" marker-end="url(#arrow-teal)"/>
+
+  <!-- Col4 → Col5 (Settlement → Fiat rails) -->
+  <line x1="875" y1="230" x2="891" y2="230" stroke="#667085" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-sim)"/>
+
+  <!-- Col2 ← Col3 (Frontend ← Backend) - receipt/evidence return -->
+  <line x1="410" y1="277" x2="421" y2="277" stroke="#0fbf8f" stroke-width="1.2" marker-end="url(#arrow-teal)"/>
+
+  <!-- ═══════════ STATE MACHINE STRIP ═══════════ -->
+  <rect x="30" y="340" width="1220" height="130" rx="14" fill="#ffffff" stroke="rgba(10,27,46,0.1)" filter="url(#shadow)"/>
+
+  <text x="50" y="366" font-size="13" font-weight="800" fill="#0a1b2e" letter-spacing="-0.02em">Payment State Machine</text>
+
+  <!-- State boxes -->
+  <!-- QUOTED -->
+  <rect x="50" y="380" width="130" height="36" rx="6" fill="#edf0ec" stroke="rgba(10,27,46,0.12)"/>
+  <text x="115" y="402" font-size="11" font-weight="700" fill="#0a1b2e" text-anchor="middle">QUOTED</text>
+
+  <text x="186" y="402" font-size="14" fill="#667085" text-anchor="middle">→</text>
+
+  <!-- FUNDED -->
+  <rect x="198" y="380" width="130" height="36" rx="6" fill="#edf0ec" stroke="rgba(10,27,46,0.12)"/>
+  <text x="263" y="402" font-size="11" font-weight="700" fill="#0a1b2e" text-anchor="middle">FUNDED</text>
+
+  <text x="334" y="402" font-size="14" fill="#667085" text-anchor="middle">→</text>
+
+  <!-- SETTLEMENT_PENDING -->
+  <rect x="346" y="380" width="160" height="36" rx="6" fill="#effaf6" stroke="#0fbf8f" stroke-width="1.2"/>
+  <text x="426" y="402" font-size="10" font-weight="700" fill="#0a755b" text-anchor="middle">SETTLEMENT PENDING</text>
+
+  <text x="512" y="402" font-size="14" fill="#667085" text-anchor="middle">→</text>
+
+  <!-- SETTLED -->
+  <rect x="524" y="380" width="130" height="36" rx="6" fill="#e1eee6" stroke="#75cb99" stroke-width="1.2"/>
+  <text x="589" y="402" font-size="11" font-weight="700" fill="#18583e" text-anchor="middle">SETTLED</text>
+
+  <text x="660" y="402" font-size="14" fill="#667085" text-anchor="middle">→</text>
+
+  <!-- PAYOUT_PENDING -->
+  <rect x="672" y="380" width="150" height="36" rx="6" fill="#effaf6" stroke="#0fbf8f" stroke-width="1.2"/>
+  <text x="747" y="402" font-size="10" font-weight="700" fill="#0a755b" text-anchor="middle">PAYOUT PENDING</text>
+
+  <text x="828" y="402" font-size="14" fill="#667085" text-anchor="middle">→</text>
+
+  <!-- DELIVERED -->
+  <rect x="840" y="380" width="130" height="36" rx="6" fill="#8fe361" stroke="#7ad34d"/>
+  <text x="905" y="402" font-size="11" font-weight="700" fill="#0a1b2e" text-anchor="middle">DELIVERED</text>
+
+  <!-- State annotations -->
+  <!-- SETTLED annotation -->
+  <line x1="589" y1="420" x2="589" y2="432" stroke="#667085" stroke-width="0.8"/>
+  <text x="589" y="442" font-size="9" fill="#667085" text-anchor="middle">Requires Circle status</text>
+  <text x="589" y="453" font-size="9" fill="#667085" text-anchor="middle">COMPLETE</text>
+
+  <!-- DELIVERED annotation -->
+  <line x1="905" y1="420" x2="905" y2="432" stroke="#667085" stroke-width="0.8"/>
+  <text x="905" y="442" font-size="9" fill="#667085" text-anchor="middle">Requires payout</text>
+  <text x="905" y="453" font-size="9" fill="#667085" text-anchor="middle">callback</text>
+
+  <!-- Failure branch -->
+  <rect x="1000" y="380" width="180" height="36" rx="6" fill="#f7e5de" stroke="#812b1d" stroke-width="1"/>
+  <text x="1090" y="398" font-size="10" font-weight="700" fill="#812b1d" text-anchor="middle">SETTLEMENT FAILED</text>
+  <text x="1090" y="412" font-size="9" fill="#812b1d" text-anchor="middle">No ArcScan link</text>
+
+  <!-- Bidir arrow between SETTLEMENT_PENDING and FAILED -->
+  <line x1="500" y1="398" x2="996" y2="398" stroke="#812b1d" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <text x="750" y="440" font-size="9" fill="#812b1d" text-anchor="middle">⬑ insufficient balance</text>
+
+  <!-- Idempotency note -->
+  <rect x="30" y="480" width="1220" height="42" rx="8" fill="rgba(15,191,143,0.06)" stroke="rgba(15,191,143,0.18)"/>
+  <text x="640" y="498" font-size="11" font-weight="700" fill="#0a755b" text-anchor="middle">Idempotency guard</text>
+  <text x="640" y="513" font-size="10" fill="#667085" text-anchor="middle">Duplicates reuse the original Circle transaction · Recipient delta remains zero · No second transfer</text>
+
+  <!-- ═══════════ DATA SAFETY NOTE ═══════════ -->
+  <text x="30" y="555" font-size="10" font-weight="800" fill="#667085" letter-spacing="0.08em">CREDENTIAL BOUNDARY</text>
+  <line x1="30" y1="560" x2="170" y2="560" stroke="rgba(10,27,46,0.12)"/>
+
+  <!-- Safety notes in a row -->
+  <rect x="30" y="570" width="290" height="36" rx="6" fill="#ffffff" stroke="rgba(10,27,46,0.1)"/>
+  <text x="175" y="586" font-size="10" fill="#667085" text-anchor="middle">Circle credentials remain server-side</text>
+  <text x="175" y="599" font-size="9" fill="#667085" text-anchor="middle">Never sent to browser or Vercel</text>
+
+  <rect x="336" y="570" width="290" height="36" rx="6" fill="#ffffff" stroke="rgba(10,27,46,0.1)"/>
+  <text x="481" y="586" font-size="10" fill="#667085" text-anchor="middle">No personal or invoice data on-chain</text>
+  <text x="481" y="599" font-size="9" fill="#667085" text-anchor="middle">Arc tx hash only for settlement proof</text>
+
+  <rect x="642" y="570" width="290" height="36" rx="6" fill="#ffffff" stroke="rgba(10,27,46,0.1)"/>
+  <text x="787" y="586" font-size="10" fill="#667085" text-anchor="middle">Payout callback requires secret</text>
+  <text x="787" y="599" font-size="9" fill="#667085" text-anchor="middle">Shared only between backend and payout provider</text>
+
+  <rect x="948" y="570" width="290" height="36" rx="6" fill="#ffffff" stroke="rgba(10,27,46,0.1)"/>
+  <text x="1093" y="586" font-size="10" fill="#667085" text-anchor="middle">Fiat confirmation is independent</text>
+  <text x="1093" y="599" font-size="9" fill="#667085" text-anchor="middle">Payout delivery is separate from chain settlement</text>
+
+  <!-- ═══════════ LEGEND ═══════════ -->
+  <text x="30" y="635" font-size="10" font-weight="800" fill="#667085" letter-spacing="0.08em">LEGEND</text>
+  <line x1="30" y1="640" x2="84" y2="640" stroke="rgba(10,27,46,0.12)"/>
+
+  <!-- Solid line = Real -->
+  <line x1="30" y1="658" x2="70" y2="658" stroke="#0a1b2e" stroke-width="1.5"/>
+  <text x="82" y="662" font-size="10" fill="#667085">Real component or data flow</text>
+
+  <!-- Teal line = Real settlement -->
+  <line x1="230" y1="658" x2="270" y2="658" stroke="#0fbf8f" stroke-width="1.5"/>
+  <text x="282" y="662" font-size="10" fill="#667085">Settlement transaction</text>
+
+  <!-- Dashed line = Simulated -->
+  <line x1="430" y1="658" x2="475" y2="658" stroke="#667085" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="487" y="662" font-size="10" fill="#667085">Simulated</text>
+
+  <!-- Dark block = Settlement layer -->
+  <rect x="590" y="648" width="24" height="16" rx="3" fill="#0a1b2e"/>
+  <text x="626" y="662" font-size="10" fill="#667085">Settlement infrastructure</text>
+
+  <!-- SIMULATED badge -->
+  <rect x="800" y="650" width="16" height="12" rx="3" fill="#667085"/>
+  <text x="828" y="662" font-size="10" fill="#667085">Simulated component</text>
+
+  <!-- REAL badge -->
+  <rect x="980" y="650" width="16" height="12" rx="3" fill="#0a755b"/>
+  <text x="1008" y="662" font-size="10" fill="#667085">Real component</text>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <line x1="30" y1="690" x2="1250" y2="690" stroke="rgba(10,27,46,0.08)"/>
+  <text x="30" y="712" font-size="9" fill="#667085">Setula Hackathon MVP · github.com/OutstandingVick/setula · Arc Testnet tx 0xd033…b2afec · Deployed commit 94f6bd7</text>
+  <text x="1250" y="712" font-size="9" fill="#667085" text-anchor="end">2026-08-05</text>
+</svg>
