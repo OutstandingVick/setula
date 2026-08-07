@@ -106,7 +106,7 @@ Next.js frontend → Setula backend → Circle Wallets → Arc Testnet → simul
 
 ### Architecture diagram
 
-*(Reserved for architecture diagram — add an image file here and link it.)*
+![Setula architecture diagram](./docs/setula-architecture.svg)
 
 ## Technology stack
 
