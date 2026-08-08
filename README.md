@@ -2,7 +2,7 @@
 
 Setula helps UAE agencies pay overseas contractors in local currency, with USDC settling on Arc under the hood.
 
-- **Live demo**: https://setula.vercel.app
+- **Live demo**: https://setula-app.vercel.app
 - **Repository**: https://github.com/OutstandingVick/setula
 - **ArcScan proof**: https://testnet.arcscan.app/tx/0xd033f753ccae0b55585a94a754657a6154f2a6690748b55adbdbb469e2b2afec
 
@@ -29,7 +29,7 @@ The finance user sees only the AED amount they approve and the INR amount the co
 
 ### Live application
 
-https://setula.vercel.app
+https://setula-app.vercel.app
 
 ### Steps
 

@@ -10,3 +10,4 @@ public/app.js
 landing/.next/
 landing/tsconfig.tsbuildinfo
 .vercel
+.env*

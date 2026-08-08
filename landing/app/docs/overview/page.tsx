@@ -11,7 +11,7 @@ export default function OverviewPage() {
       </p>
 
       <p>
-        <a href="https://setula.vercel.app"><strong>Live demo</strong></a>
+        <a href="https://setula-app.vercel.app"><strong>Live demo</strong></a>
         {" · "}
         <a href="https://github.com/OutstandingVick/setula"><strong>GitHub repository</strong></a>
         {" · "}
