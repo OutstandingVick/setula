@@ -60,7 +60,7 @@ export function DocsSidebar() {
         <a href="https://github.com/OutstandingVick/setula" className="docs-sidebar-gh-link">
           GitHub →
         </a>
-        <a href="https://setula-app.vercel.app" className="docs-sidebar-gh-link">
+        <a href="https://setula.vercel.app" className="docs-sidebar-gh-link">
           Live Demo →
         </a>
       </div>

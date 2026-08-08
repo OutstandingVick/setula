@@ -13,7 +13,7 @@ export default function DeploymentPage() {
           <tr><th>Service</th><th>URL</th></tr>
         </thead>
         <tbody>
-          <tr><td>Frontend</td><td><a href="https://setula-app.vercel.app">setula-app.vercel.app</a></td></tr>
+          <tr><td>Frontend</td><td><a href="https://setula.vercel.app">setula.vercel.app</a></td></tr>
           <tr><td>Backend</td><td><a href="https://ideal-alignment-production-912d.up.railway.app/health">ideal-alignment-production-912d.up.railway.app</a></td></tr>
           <tr><td>ArcScan proof</td><td><a href="https://testnet.arcscan.app/tx/0xd033f753ccae0b55585a94a754657a6154f2a6690748b55adbdbb469e2b2afec">0xd033…b2afec</a></td></tr>
         </tbody>
@@ -91,7 +91,7 @@ CORS_ORIGIN=...`}
       <ul>
         <li><code>http://localhost:3001</code> — landing page dev</li>
         <li><code>http://localhost:4000</code> — backend dev</li>
-        <li><code>https://setula-app.vercel.app</code> — production</li>
+        <li><code>https://setula.vercel.app</code> — production</li>
       </ul>
 
       <p>The Next.js proxy makes CORS unnecessary in the normal browser flow — all requests are same-origin.</p>

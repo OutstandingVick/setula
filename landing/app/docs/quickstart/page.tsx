@@ -10,7 +10,7 @@ export default function QuickstartPage() {
       <p>Follow these steps to run the live demo and complete a cross-border contractor payment on Arc Testnet.</p>
 
       <Callout variant="info">
-        <p>The live demo is available at <a href="https://setula-app.vercel.app">setula-app.vercel.app</a>.</p>
+        <p>The live demo is available at <a href="https://setula.vercel.app">setula.vercel.app</a>.</p>
       </Callout>
 
       <h2>Live demo walkthrough</h2>
