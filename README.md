@@ -314,9 +314,12 @@ setula/
 │   └── favicon.svg
 ├── landing/                # Next.js landing page
 │   ├── app/                # App Router pages and layout
+│   ├── app/docs/           # Documentation site pages
 │   ├── components/         # React components (Hero, JourneySections, etc.)
+│   ├── components/docs/    # Documentation UI components
 │   ├── lib/                # Quote calculator utilities
 │   └── public/             # Landing page static assets
+│       └── docs/           # Architecture diagram assets
 ├── tests/                  # Backend test suites
 │   ├── service.test.ts     # State machine, idempotency, failure paths (9 tests)
 │   └── http.test.ts        # HTTP server integration (2 tests)

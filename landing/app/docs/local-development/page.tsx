@@ -171,7 +171,6 @@ npm run build:web       # browser bundle (esbuild)`}
 ├── scripts/
 │   └── run-golden-path.ts  # Arc Testnet E2E verification
 ├── docs/                   # Architecture diagrams
-├── documentation/          # Project reference docs
 ├── package.json
 ├── .env.example
 └── .gitignore`}
