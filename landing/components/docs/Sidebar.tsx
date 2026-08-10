@@ -63,6 +63,9 @@ export function DocsSidebar() {
         <a href="https://setula.vercel.app" className="docs-sidebar-gh-link">
           Live Demo →
         </a>
+        <a href="/docs/SUBMISSION.pdf" className="docs-sidebar-gh-link">
+          Submission (PDF) ↓
+        </a>
       </div>
     </aside>
   );

@@ -23,6 +23,7 @@ export default function LandingPage() {
             <a href="#how-it-works">How it works</a>
             <a href="#why-setula">Why Setula</a>
             <a href="#infrastructure">Infrastructure</a>
+            <a href="/docs/overview">Docs</a>
           </div>
           <a className="button button-small" href={demoUrl}>Launch demo</a>
         </nav>
