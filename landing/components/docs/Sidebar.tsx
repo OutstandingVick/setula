@@ -30,15 +30,35 @@ const navigation: { group: string; items: NavItem[] }[] = [
   },
 ];
 
-export function DocsSidebar() {
+export function DocsSidebar({
+  open = false,
+  onClose,
+}: {
+  open?: boolean;
+  onClose?: () => void;
+}) {
   const pathname = usePathname();
 
   return (
-    <aside className="docs-sidebar">
-      <div className="docs-sidebar-brand">
-        <Link href="/">
-          <SetulaLogo theme="light" className="docs-logo" />
-        </Link>
+    <aside
+      id="docs-navigation"
+      className={`docs-sidebar${open ? " open" : ""}`}
+      aria-label="Documentation navigation"
+    >
+      <div className="docs-sidebar-header">
+        <div className="docs-sidebar-brand">
+          <Link href="/">
+            <SetulaLogo theme="dark" className="docs-logo" />
+          </Link>
+        </div>
+        <button
+          type="button"
+          className="docs-sidebar-close"
+          onClick={onClose}
+          aria-label="Close navigation"
+        >
+          ×
+        </button>
       </div>
       <nav className="docs-sidebar-nav">
         {navigation.map((group) => (
@@ -49,6 +69,7 @@ export function DocsSidebar() {
                 key={item.href}
                 href={item.href}
                 className={`docs-sidebar-link${pathname === item.href ? " active" : ""}`}
+                onClick={onClose}
               >
                 {item.label}
               </Link>

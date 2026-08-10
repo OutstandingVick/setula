@@ -10,18 +10,23 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="docs-shell">
+      <a className="skip-link" href="#docs-content">Skip to documentation</a>
       <div
         className={`docs-sidebar-overlay${sidebarOpen ? " open" : ""}`}
         onClick={() => setSidebarOpen(false)}
+        aria-hidden="true"
       />
-      <div className={`docs-sidebar${sidebarOpen ? " open" : ""}`}>
-        <DocsSidebar />
-      </div>
-      <main className="docs-main">
+      <DocsSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+      <main className="docs-main" id="docs-content">
         <div className="docs-topbar">
           <button
             className="docs-mobile-toggle"
             onClick={() => setSidebarOpen(true)}
+            aria-controls="docs-navigation"
+            aria-expanded={sidebarOpen}
             aria-label="Open navigation"
           >
             ☰ Menu
