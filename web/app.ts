@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { calculateAedMinor, parseInrMinor } from "./amount.js";
+import { idempotencyStorageKey } from "./idempotency.js";
 
 const paymentStatusSchema = z.enum([
   "DRAFT",
@@ -207,8 +208,8 @@ function formatDateTime(value: string): string {
   }).format(new Date(value));
 }
 
-function actionKey(name: string): string {
-  const storageKey = `setula:idempotency:${runId}:${name}`;
+function actionKey(name: string, scope: unknown = name): string {
+  const storageKey = idempotencyStorageKey(runId, name, scope);
   const existing = sessionStorage.getItem(storageKey);
   if (existing) return existing;
   const key = crypto.randomUUID();
@@ -671,7 +672,7 @@ async function createInvoiceAndQuote(form: HTMLFormElement): Promise<void> {
       render();
       const beneficiary = await request("/api/beneficiaries", beneficiarySchema, {
         method: "POST",
-        key: actionKey("beneficiary"),
+        key: actionKey("beneficiary", CONTRACTOR),
         body: {
           name: CONTRACTOR.name,
           email: CONTRACTOR.email,
@@ -680,12 +681,17 @@ async function createInvoiceAndQuote(form: HTMLFormElement): Promise<void> {
       });
       const invoice = await request("/api/invoices", invoiceSchema, {
         method: "POST",
-        key: actionKey("invoice"),
+        key: actionKey("invoice", {
+          beneficiaryId: beneficiary.id,
+          reference,
+          amountInrMinor,
+          description,
+        }),
         body: { beneficiaryId: beneficiary.id, reference, amountInrMinor, description },
       });
       const quote = await request(`/api/invoices/${invoice.id}/quotes`, quoteSchema, {
         method: "POST",
-        key: actionKey("quote"),
+        key: actionKey("quote", invoice.id),
         body: {},
       });
       model = { view: "quote", beneficiary, invoice, quote, draft: undefined };
@@ -712,13 +718,13 @@ async function approveAndSettle(): Promise<void> {
       render();
       const payment = await request("/api/payments", paymentSchema, {
         method: "POST",
-        key: actionKey("payment"),
+        key: actionKey("payment", { invoiceId: invoice.id, quoteId: quote.id }),
         body: { invoiceId: invoice.id, quoteId: quote.id },
       });
       sessionStorage.setItem(`setula:payment-id:${runId}`, payment.id);
       await request(`/api/payments/${payment.id}/funding-confirmations`, paymentSchema, {
         method: "POST",
-        key: actionKey("funding"),
+        key: actionKey("funding", payment.id),
         body: {},
       });
       let aggregate = await request(`/api/payments/${payment.id}`, aggregateSchema);
@@ -730,7 +736,7 @@ async function approveAndSettle(): Promise<void> {
         paymentSchema,
         {
           method: "POST",
-          key: actionKey("settlement"),
+          key: actionKey("settlement", payment.id),
           body: {},
           timeoutMs: 190_000,
         },
@@ -782,7 +788,10 @@ async function completePayout(): Promise<void> {
       render();
       await request(`/api/payments/${payment.id}/demo-payouts`, payoutResultSchema, {
         method: "POST",
-        key: actionKey("payout"),
+        key: actionKey("payout", {
+          paymentId: payment.id,
+          status: simulateRejectedPayout ? "REJECTED" : "DELIVERED",
+        }),
         body: { status: simulateRejectedPayout ? "REJECTED" : "DELIVERED" },
       });
       const aggregate = await request(`/api/payments/${payment.id}`, aggregateSchema);

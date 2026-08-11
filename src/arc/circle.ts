@@ -1,6 +1,6 @@
-import {
-  initiateDeveloperControlledWalletsClient,
-  type CircleDeveloperControlledWalletsClient,
+import { createRequire } from "node:module";
+import type {
+  CircleDeveloperControlledWalletsClient,
 } from "@circle-fin/developer-controlled-wallets";
 import { parseUsdc } from "./amount.js";
 import {
@@ -8,6 +8,15 @@ import {
   loadCredentials,
   loadSettlementConfig,
 } from "./config.js";
+
+// Circle publishes both ESM and CommonJS builds, but Node 24 can interpret the
+// package's .js ESM entry as CommonJS because the package does not declare a
+// module type. Loading the explicit CommonJS export keeps the proven client
+// behaviour consistent across local development and Railway.
+const require = createRequire(import.meta.url);
+const { initiateDeveloperControlledWalletsClient } = require(
+  "@circle-fin/developer-controlled-wallets",
+) as typeof import("@circle-fin/developer-controlled-wallets");
 
 // Reused from setula-arc-spike/src/circle.ts.
 export function createCircleClient(): CircleDeveloperControlledWalletsClient {
