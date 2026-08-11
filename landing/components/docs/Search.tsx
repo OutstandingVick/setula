@@ -16,6 +16,11 @@ const pages: SearchPage[] = [
     keywords: "quickstart demo live steps sandbox quote funding settlement payout receipt",
   },
   {
+    label: "Roadmap",
+    href: "/docs/roadmap",
+    keywords: "roadmap now next later pilot production compliance live fiat corridors scale",
+  },
+  {
     label: "Architecture",
     href: "/docs/architecture",
     keywords: "architecture frontend backend vercel railway circle wallet arc testnet diagram",

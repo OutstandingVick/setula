@@ -12,6 +12,7 @@ const navigation: { group: string; items: NavItem[] }[] = [
     items: [
       { label: "Overview", href: "/docs/overview" },
       { label: "Quickstart", href: "/docs/quickstart" },
+      { label: "Roadmap", href: "/docs/roadmap" },
     ],
   },
   {
