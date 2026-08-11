@@ -201,7 +201,7 @@ export function FinalCta({ demoUrl }: FinalCtaProps) {
     <section className="final-cta" aria-labelledby="final-cta-title">
       <p className="eyebrow">Working prototype</p>
       <h2 id="final-cta-title">See one cross-border payment from quote to delivery.</h2>
-      <a className="button button-light" href={demoUrl}>Launch the Setula demo</a>
+      <a className="button button-light" href={demoUrl}>Start a payment</a>
       <p>Uses a real USDC settlement transaction on Arc Testnet.</p>
     </section>
   );

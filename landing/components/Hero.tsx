@@ -14,7 +14,7 @@ export function Hero({ demoUrl }: HeroProps) {
           invoice-linked records and verifiable USDC settlement on Arc.
         </p>
         <div className="hero-actions">
-          <a className="button" href={demoUrl}>Launch payment demo</a>
+          <a className="button" href={demoUrl}>Start a payment</a>
           <a className="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
         </div>
         <p className="trust-line">

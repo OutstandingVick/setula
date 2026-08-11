@@ -20,7 +20,7 @@ export default function QuickstartPage() {
           <p><strong>Open the demo.</strong> The landing page shows a contractor invoice for INR 91,000 with a pre-filled sandbox quote of AED 4,000.</p>
         </Step>
         <Step>
-          <p><strong>Click Launch demo.</strong> The payment page loads with the invoice and the AED-to-INR quote pre-configured.</p>
+          <p><strong>Select Start a payment.</strong> The payment page loads with the invoice and the AED-to-INR quote pre-configured.</p>
           <p><span className="docs-status-sim">SANDBOX QUOTE</span> — The exchange rate is fixed at 22.75 INR per AED. The quote is deterministic and does not use a live FX provider.</p>
         </Step>
         <Step>

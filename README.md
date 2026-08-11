@@ -34,7 +34,7 @@ https://setula.vercel.app
 ### Steps
 
 1. Open the demo. The landing page shows a contractor invoice for INR 91,000.
-2. Click **Launch demo**. The payment page loads with a pre-filled AED 4,000 sandbox quote and the INR 91,000 invoice.
+2. Select **Start a payment**. The payment page loads with a pre-filled AED 4,000 sandbox quote and the INR 91,000 invoice.
 3. Click **Approve payment**. AED funding is simulated, then a real 0.01 USDC transfer executes on Arc Testnet.
 4. Watch the progress bar advance through settlement. When it reaches `SETTLED`, an ArcScan link appears.
 5. Click the ArcScan link to view the confirmed transaction on Arc Testnet.

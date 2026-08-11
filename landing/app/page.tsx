@@ -25,7 +25,7 @@ export default function LandingPage() {
             <a href="#infrastructure">Infrastructure</a>
             <a href="/docs/overview">Docs</a>
           </div>
-          <a className="button button-small" href={demoUrl}>Launch demo</a>
+          <a className="button button-small" href={demoUrl}>Start a payment</a>
         </nav>
       </header>
 
@@ -47,7 +47,7 @@ export default function LandingPage() {
               <p className="footer-summary">
                 Exact contractor payments with invoice-linked records and verifiable USDC settlement on Arc.
               </p>
-              <a className="footer-demo-link" href={demoUrl}>Launch payment demo <span aria-hidden="true">↗</span></a>
+              <a className="footer-demo-link" href={demoUrl}>Start a payment <span aria-hidden="true">↗</span></a>
             </div>
             <nav className="footer-nav" aria-label="Footer navigation">
               <div className="footer-column">
@@ -55,7 +55,7 @@ export default function LandingPage() {
                 <a href="#how-it-works">How it works</a>
                 <a href="#infrastructure">Infrastructure</a>
                 <a href="#why-arc">Why Arc</a>
-                <a href={demoUrl}>Payment demo</a>
+                <a href={demoUrl}>Start a payment</a>
               </div>
               <div className="footer-column">
                 <p>Build &amp; proof</p>
