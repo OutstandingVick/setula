@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { calculateAedMinor, parseInrMinor } from "./amount.js";
 
 const paymentStatusSchema = z.enum([
   "DRAFT",
@@ -137,17 +138,16 @@ type Model = {
   aggregate?: Aggregate | undefined;
   error?: string | undefined;
   busy?: string | undefined;
+  draft?: PaymentDraft | undefined;
 };
 
-type LandingPrefill = {
-  amountAedMinor: number;
-  amountInrMinor: number;
+type PaymentDraft = {
+  reference: string;
+  amount: string;
+  description: string;
 };
 
-const DEFAULT_DEMO_QUOTE: LandingPrefill = {
-  amountAedMinor: 400_000,
-  amountInrMinor: 9_100_000,
-};
+const DEFAULT_INR_AMOUNT = "91000.00";
 
 const appRoot = document.querySelector<HTMLDivElement>("#app");
 if (!appRoot) throw new Error("Setula app root is missing");
@@ -167,7 +167,6 @@ let model: Model = { view: "details" };
 let expiryTimer: number | undefined;
 const inFlight = new Map<string, Promise<unknown>>();
 
-const landingPrefill = DEFAULT_DEMO_QUOTE;
 const simulateRejectedPayout =
   new URLSearchParams(window.location.search).get("payout") === "rejected";
 if (window.location.pathname !== "/pay" || window.location.search) {
@@ -206,18 +205,6 @@ function formatDateTime(value: string): string {
     dateStyle: "medium",
     timeStyle: "medium",
   }).format(new Date(value));
-}
-
-function parseInrMinor(value: string): number {
-  if (!/^(0|[1-9]\d*)(?:\.\d{1,2})?$/.test(value)) {
-    throw new Error("Enter a valid INR amount with no more than two decimal places.");
-  }
-  const [whole = "0", fraction = ""] = value.split(".");
-  const minor = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
-  if (!Number.isSafeInteger(minor) || minor <= 0) {
-    throw new Error("The recipient amount must be greater than zero.");
-  }
-  return minor;
 }
 
 function actionKey(name: string): string {
@@ -312,6 +299,17 @@ function errorAlert(): string {
 }
 
 function detailsView(): string {
+  const draftReference = model.draft?.reference ?? model.invoice?.reference ?? defaultReference;
+  const draftAmount = model.draft?.amount ?? (model.invoice ? (model.invoice.amountInrMinor / 100).toFixed(2) : DEFAULT_INR_AMOUNT);
+  const draftDescription = model.draft?.description ?? model.invoice?.description ?? "Brand identity design services";
+  let amountHelper = "Enter any positive INR amount. The AED estimate updates using the fixed sandbox rate.";
+  try {
+    const amountInrMinor = parseInrMinor(draftAmount);
+    amountHelper = `Sandbox estimate: ${formatMinor(calculateAedMinor(amountInrMinor), "AED")} → ${formatMinor(amountInrMinor, "INR")} at 22.75 INR/AED.`;
+  } catch {
+    // Keep the neutral helper while the user edits an incomplete amount.
+  }
+
   return shell(`
     <main class="page payment-entry-page" id="main-content">
       <section class="entry-shell" aria-labelledby="entry-title">
@@ -339,21 +337,21 @@ function detailsView(): string {
 
             <div class="entry-field entry-reference-field">
               <label for="invoice-reference">Invoice reference</label>
-              <input id="invoice-reference" name="reference" value="${escapeHtml(model.invoice?.reference ?? defaultReference)}" maxlength="80" required autocomplete="off" />
+              <input id="invoice-reference" name="reference" value="${escapeHtml(draftReference)}" maxlength="80" required autocomplete="off" />
             </div>
 
             <div class="entry-field entry-amount-field">
               <label for="invoice-amount">Contractor receives exactly</label>
               <div class="entry-amount-control">
                 <span class="currency-chip"><i aria-hidden="true">IN</i> INR</span>
-                <input id="invoice-amount" name="amount" value="${model.invoice ? (model.invoice.amountInrMinor / 100).toFixed(2) : landingPrefill ? (landingPrefill.amountInrMinor / 100).toFixed(2) : "1.00"}" inputmode="decimal" required aria-describedby="amount-help" />
+                <input id="invoice-amount" name="amount" value="${escapeHtml(draftAmount)}" inputmode="decimal" autocomplete="off" required aria-describedby="amount-help" />
               </div>
-              <p class="entry-helper" id="amount-help">${landingPrefill ? `Prefilled from the landing quote: ${escapeHtml(formatMinor(landingPrefill.amountAedMinor, "AED"))} → ${escapeHtml(formatMinor(landingPrefill.amountInrMinor, "INR"))}.` : "Use INR 1.00 for the 0.01 USDC Arc Testnet demo settlement."}</p>
+              <p class="entry-helper" id="amount-help">${escapeHtml(amountHelper)}</p>
             </div>
 
             <div class="entry-field entry-purpose-field">
               <label for="invoice-description">Payment purpose</label>
-              <textarea id="invoice-description" name="description" maxlength="240" required>Brand identity design services</textarea>
+              <textarea id="invoice-description" name="description" maxlength="240" required>${escapeHtml(draftDescription)}</textarea>
             </div>
 
             <div class="entry-summary" aria-label="Payment rail summary">
@@ -611,6 +609,18 @@ function bindEvents(): void {
     event.preventDefault();
     void createInvoiceAndQuote(event.currentTarget as HTMLFormElement);
   });
+  document.querySelector<HTMLInputElement>("#invoice-amount")?.addEventListener("input", (event) => {
+    const input = event.currentTarget as HTMLInputElement;
+    const helper = document.querySelector<HTMLElement>("#amount-help");
+    if (!helper) return;
+    try {
+      const amountInrMinor = parseInrMinor(input.value);
+      helper.textContent = `Sandbox estimate: ${formatMinor(calculateAedMinor(amountInrMinor), "AED")} → ${formatMinor(amountInrMinor, "INR")} at 22.75 INR/AED.`;
+      input.removeAttribute("aria-invalid");
+    } catch {
+      helper.textContent = "Enter any positive INR amount. Commas and up to two decimal places are supported.";
+    }
+  });
   document.querySelector<HTMLButtonElement>("[data-edit-payment]")?.addEventListener("click", () => {
     model.view = "details";
     model.error = undefined;
@@ -647,10 +657,15 @@ function startCountdown(): void {
 async function createInvoiceAndQuote(form: HTMLFormElement): Promise<void> {
   await runOnce("create-invoice", async () => {
     const data = new FormData(form);
+    const draft: PaymentDraft = {
+      reference: String(data.get("reference") ?? "").trim(),
+      amount: String(data.get("amount") ?? "").trim(),
+      description: String(data.get("description") ?? "").trim(),
+    };
+    model = { ...model, draft };
     try {
-      const reference = String(data.get("reference") ?? "").trim();
-      const description = String(data.get("description") ?? "").trim();
-      const amountInrMinor = parseInrMinor(String(data.get("amount") ?? ""));
+      const { reference, description } = draft;
+      const amountInrMinor = parseInrMinor(draft.amount);
       if (!reference || !description) throw new Error("Invoice reference and description are required.");
       model = { ...model, busy: "Creating invoice and quote…", error: undefined };
       render();
@@ -673,7 +688,7 @@ async function createInvoiceAndQuote(form: HTMLFormElement): Promise<void> {
         key: actionKey("quote"),
         body: {},
       });
-      model = { view: "quote", beneficiary, invoice, quote };
+      model = { view: "quote", beneficiary, invoice, quote, draft: undefined };
       render(true);
     } catch (error) {
       model = {
