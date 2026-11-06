@@ -1,20 +1,12 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import { inrToAed, PAYMENTS_STORAGE_KEY, type LocalPayment } from "../../lib/app-data";
-import { AppHeader, BeneficiaryCard, CurrencyAmount, EmptyState, PaymentListItem, PrimaryLink } from "./UI";
-
+import { useCallback, useEffect, useState } from "react";
+import { readPaymentIds } from "../../lib/app-data";
+import { setulaApi, type PaymentAggregate } from "../../lib/setula-api";
+import { AppHeader, BeneficiaryCard, CurrencyAmount, EmptyState, ErrorState, PaymentListItem, PrimaryLink } from "./UI";
 export function Dashboard() {
-  const [payments, setPayments] = useState<LocalPayment[] | null>(null);
-  useEffect(() => {
-    try { setPayments(JSON.parse(localStorage.getItem(PAYMENTS_STORAGE_KEY) ?? "[]") as LocalPayment[]); }
-    catch { setPayments([]); }
-  }, []);
-  const count = payments?.length ?? 0;
-  const total = payments?.reduce((sum, payment) => sum + Number(payment.amountInr || 0), 0) ?? 0;
-  return <>
-    <AppHeader eyebrow="Friday, 6 November" title="Good morning, Studio North" description="Pay your international contractors with a clear AED total and local-currency delivery." action={<PrimaryLink href="/app/pay">Pay contractor</PrimaryLink>} />
-    <section className="summary-grid" aria-label="Payment summary"><CurrencyAmount label="Estimated AED total" amount={inrToAed(total)} currency="AED" /><CurrencyAmount label="Contractor receives" amount={total} currency="INR" /><div className="summary-note"><span>Payment corridor</span><strong>UAE → India</strong><small>{count} prepared · AED payment · INR delivery</small></div></section>
-    <div className="dashboard-grid"><BeneficiaryCard /><section className="recent-card" id="payments" aria-labelledby="recent-title"><div className="section-heading"><div><p className="section-kicker">Activity</p><h2 id="recent-title">Recent payments</h2></div><span>{count} total</span></div>{payments === null ? <div className="loading-block" aria-label="Loading payments" /> : payments.length ? <div className="payment-list">{payments.map(payment => <PaymentListItem key={payment.id} payment={payment} />)}</div> : <EmptyState />}</section></div>
-  </>;
+  const [payments, setPayments] = useState<PaymentAggregate[] | null>(null); const [error, setError] = useState("");
+  const load = useCallback(async () => { setPayments(null); setError(""); try { await setulaApi.health(); const results = await Promise.allSettled(readPaymentIds().map(id => setulaApi.getPayment(id))); setPayments(results.flatMap(result => result.status === "fulfilled" ? [result.value] : [])); } catch (cause) { setError(cause instanceof Error ? cause.message : "Unable to load payments. Check the backend and try again."); } }, []);
+  useEffect(() => { void load(); }, [load]);
+  const totalInr = payments?.reduce((sum, item) => sum + item.invoice.amountInrMinor / 100, 0) ?? 0; const totalAed = payments?.reduce((sum, item) => sum + item.quote.amountAedMinor / 100, 0) ?? 0;
+  return <><AppHeader eyebrow="Friday, 6 November" title="Good morning, Studio North" description="Pay your international contractors with a clear AED total and local-currency delivery." action={<PrimaryLink href="/app/pay">Pay contractor</PrimaryLink>} /><section className="summary-grid" aria-label="Payment summary"><CurrencyAmount label="Authoritative AED total" amount={totalAed} currency="AED" /><CurrencyAmount label="Contractor receives" amount={totalInr} currency="INR" /><div className="summary-note"><span>Payment corridor</span><strong>UAE → India</strong><small>{payments?.length ?? 0} payments · AED payment · INR delivery</small></div></section><div className="dashboard-grid"><BeneficiaryCard /><section className="recent-card" id="payments" aria-labelledby="recent-title"><div className="section-heading"><div><p className="section-kicker">Activity</p><h2 id="recent-title">Recent payments</h2></div><span>{payments?.length ?? 0} total</span></div>{error ? <ErrorState title="Payments unavailable" message={error} onRetry={() => void load()} /> : payments === null ? <div className="loading-block" role="status" aria-label="Loading recent payments" /> : payments.length ? <div className="payment-list">{payments.map(aggregate => <PaymentListItem key={aggregate.payment.id} aggregate={aggregate} />)}</div> : <EmptyState />}</section></div></>;
 }
