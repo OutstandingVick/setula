@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
 import { ArrowIcon, EmptyIcon } from "./Icons";
-import type { LocalPayment } from "../../lib/app-data";
-import { beneficiary, formatMoney } from "../../lib/app-data";
+import type { PaymentAggregate, PaymentStatus } from "../../lib/setula-api";
+import { beneficiary, formatDate, formatMoney } from "../../lib/app-data";
 
 export function AppHeader({ eyebrow, title, description, action }: { eyebrow?: string; title: string; description?: string; action?: ReactNode }) {
   return <header className="app-header"><div>{eyebrow && <p className="app-eyebrow">{eyebrow}</p>}<h1>{title}</h1>{description && <p className="app-description">{description}</p>}</div>{action}</header>;
@@ -31,13 +31,13 @@ export function BeneficiaryCard({ compact = false }: { compact?: boolean }) {
   </section>;
 }
 
-export function PaymentStatusBadge({ status }: { status: LocalPayment["status"] }) {
-  return <span className="status-badge"><span aria-hidden="true" />{status}</span>;
+export function PaymentStatusBadge({ status }: { status: PaymentStatus }) {
+  const label = status.replaceAll("_", " ").toLowerCase().replace(/^./, value => value.toUpperCase());
+  return <span className="status-badge" data-status={status}><span aria-hidden="true" />{label}</span>;
 }
 
-export function PaymentListItem({ payment }: { payment: LocalPayment }) {
-  const amount = Number(payment.amountInr);
-  return <article className="payment-list-item"><div className="payment-list-avatar">AR</div><div className="payment-list-copy"><strong>Asha Rao</strong><span>{payment.invoiceReference} · {payment.purpose}</span></div><div className="payment-list-value"><strong>{formatMoney(amount, "INR")}</strong><PaymentStatusBadge status={payment.status} /></div></article>;
+export function PaymentListItem({ aggregate }: { aggregate: PaymentAggregate }) {
+  return <Link className="payment-list-item" href={`/app/pay/${aggregate.payment.id}`}><div className="payment-list-avatar">AR</div><div className="payment-list-copy"><strong>Asha Rao</strong><span>{aggregate.payment.reference} · {formatDate(aggregate.payment.createdAt)}</span></div><div className="payment-list-value"><strong>{formatMoney(aggregate.invoice.amountInrMinor / 100, "INR")}</strong><PaymentStatusBadge status={aggregate.payment.status} /></div></Link>;
 }
 
 export function EmptyState() {
@@ -53,4 +53,8 @@ export function FormField({ label, hint, error, ...props }: FieldProps) {
 
 export function SummaryRow({ label, value, emphasis = false }: { label: string; value: ReactNode; emphasis?: boolean }) {
   return <div className={`summary-row${emphasis ? " summary-row-emphasis" : ""}`}><dt>{label}</dt><dd>{value}</dd></div>;
+}
+
+export function ErrorState({ title, message, onRetry }: { title: string; message: string; onRetry?: () => void }) {
+  return <div className="error-state" role="alert"><h2>{title}</h2><p>{message}</p>{onRetry && <button className="app-button app-button-secondary" type="button" onClick={onRetry}>Try again</button>}</div>;
 }
