@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   async rewrites() {
     return [
+      { source: "/health", destination: `${demoBackendOrigin}/health` },
       { source: "/pay", destination: `${demoBackendOrigin}/pay` },
       { source: "/pay/app.js", destination: `${demoBackendOrigin}/pay/app.js` },
       { source: "/pay/styles.css", destination: `${demoBackendOrigin}/pay/styles.css` },
