@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { paymentOperationKey, type PaymentDraft } from "../lib/app-data";
 import { buildProgressStages, canCompletePayout, hasSettlementEvidence, preparePayment } from "../lib/payment-flow";
 import { ApiError, SetulaApi, type PaymentAggregate } from "../lib/setula-api";
+import { validatePaymentInput } from "../components/app/PaymentForm";
 
 const ids = { beneficiary: "11111111-1111-4111-8111-111111111111", invoice: "22222222-2222-4222-8222-222222222222", quote: "33333333-3333-4333-8333-333333333333", payment: "44444444-4444-4444-8444-444444444444", settlement: "55555555-5555-4555-8555-555555555555", payout: "66666666-6666-4666-8666-666666666666", receipt: "77777777-7777-4777-8777-777777777777" };
 const now = "2026-11-06T10:00:00.000Z";
@@ -34,4 +35,8 @@ describe("Phase 2 payment flow", () => {
   it("matches invoice, payment, and receipt references", () => { const item = aggregate("DELIVERED"); expect(new Set([item.invoice.reference, item.payment.reference, "INV-SETULA-TEST"]).size).toBe(1); });
   it("supports direct receipt retrieval after refresh", async () => { const receipt = { id: ids.receipt, paymentId: ids.payment, invoiceId: ids.invoice, settlementId: ids.settlement, payoutId: ids.payout, reference: "INV-SETULA-TEST", amountInrMinor: 9_100_000, amountUsdc: "0.01", transactionHash: `0x${"a".repeat(64)}`, arcScanUrl: `https://testnet.arcscan.app/tx/0x${"a".repeat(64)}`, deliveredAt: now }; const fetcher = vi.fn(async () => json(receipt)); expect((await new SetulaApi(fetcher as typeof fetch).getReceipt(ids.receipt)).id).toBe(ids.receipt); });
   it("returns a recoverable backend-unavailable error", async () => { const api = new SetulaApi(vi.fn(async () => { throw new Error("offline"); }) as typeof fetch); await expect(api.health()).rejects.toMatchObject({ code: "NETWORK_ERROR", status: 0 }); });
+  it("validates empty, decimal, and very large amounts", () => { expect(validatePaymentInput("", "Design").amount).toContain("greater than zero"); expect(validatePaymentInput("91000.25", "Design")).toEqual({ amount: "", purpose: "" }); expect(validatePaymentInput("100000000", "Design").amount).toContain("below INR"); });
+  it("identifies a missing payment purpose beside its field", () => { expect(validatePaymentInput("91000", " ").purpose).toContain("payment purpose"); });
+  it("encodes user-supplied identifiers before building API URLs", async () => { const fetcher = vi.fn(async (..._args: Parameters<typeof fetch>) => json({ error: { code: "NOT_FOUND", message: "Payment not found" } }, 404)); await expect(new SetulaApi(fetcher as typeof fetch).getPayment("../payment id")).rejects.toBeInstanceOf(ApiError); expect(String(fetcher.mock.calls[0]?.[0])).toBe("/api/payments/..%2Fpayment%20id"); });
+  it("reports a missing receipt with a recoverable API error", async () => { const fetcher = vi.fn(async (..._args: Parameters<typeof fetch>) => json({ error: { code: "NOT_FOUND", message: "Receipt not found" } }, 404)); await expect(new SetulaApi(fetcher as typeof fetch).getReceipt(ids.receipt)).rejects.toMatchObject({ code: "NOT_FOUND", status: 404 }); });
 });
