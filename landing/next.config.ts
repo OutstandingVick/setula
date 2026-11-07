@@ -1,8 +1,15 @@
 import type { NextConfig } from "next";
 
-const demoBackendOrigin = (
-  process.env.DEMO_BACKEND_ORIGIN ?? "http://127.0.0.1:4000"
-).replace(/\/$/, "");
+function backendOrigin(value: string | undefined): string {
+  const candidate = value ?? "http://127.0.0.1:4000";
+  const parsed = new URL(candidate);
+  if (!['http:', 'https:'].includes(parsed.protocol) || parsed.username || parsed.password || parsed.pathname !== '/') {
+    throw new Error('DEMO_BACKEND_ORIGIN must be an HTTP(S) origin without credentials or a path');
+  }
+  return parsed.origin;
+}
+
+const demoBackendOrigin = backendOrigin(process.env.DEMO_BACKEND_ORIGIN);
 
 const nextConfig: NextConfig = {
   agentRules: false,
