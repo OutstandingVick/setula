@@ -37,7 +37,7 @@ export function PaymentStatusBadge({ status }: { status: PaymentStatus }) {
 }
 
 export function PaymentListItem({ aggregate }: { aggregate: PaymentAggregate }) {
-  return <Link className="payment-list-item" href={`/app/pay/${aggregate.payment.id}`}><div className="payment-list-avatar">AR</div><div className="payment-list-copy"><strong>Asha Rao</strong><span>{aggregate.payment.reference} · {formatDate(aggregate.payment.createdAt)}</span></div><div className="payment-list-value"><strong>{formatMoney(aggregate.invoice.amountInrMinor / 100, "INR")}</strong><PaymentStatusBadge status={aggregate.payment.status} /></div></Link>;
+  return <Link className="payment-list-item" href={`/app/pay/${encodeURIComponent(aggregate.payment.id)}`}><div className="payment-list-avatar">AR</div><div className="payment-list-copy"><strong>Asha Rao</strong><span>{aggregate.payment.reference} · {formatDate(aggregate.payment.createdAt)}</span></div><div className="payment-list-value"><strong>{formatMoney(aggregate.invoice.amountInrMinor / 100, "INR")}</strong><PaymentStatusBadge status={aggregate.payment.status} /></div></Link>;
 }
 
 export function EmptyState() {
