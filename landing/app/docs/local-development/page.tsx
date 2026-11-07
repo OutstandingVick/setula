@@ -78,8 +78,8 @@ POLL_TIMEOUT_MS=180000`}
       </CodeBlock>
 
       <p>
-        Opens <code>http://localhost:3001</code>. The landing page shows a static preview of the contractor
-        payment screen. The demo link opens <code>http://localhost:3001/pay</code> with the sandbox quote pre-loaded.
+        Opens <code>http://localhost:3022</code>. The landing page shows a static preview of the contractor
+        payment screen. The demo link opens <code>http://localhost:3022/pay</code> with the sandbox quote pre-loaded.
       </p>
 
       <p>
