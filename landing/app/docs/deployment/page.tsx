@@ -89,7 +89,7 @@ CORS_ORIGIN=...`}
       <p>The backend sets CORS headers for origins listed in <code>CORS_ORIGIN</code> (comma-separated):</p>
 
       <ul>
-        <li><code>http://localhost:3001</code> — landing page dev</li>
+        <li><code>http://localhost:3022</code> — landing page dev</li>
         <li><code>http://localhost:4000</code> — backend dev</li>
         <li><code>https://setula.vercel.app</code> — production</li>
       </ul>
