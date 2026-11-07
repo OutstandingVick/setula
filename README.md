@@ -189,7 +189,7 @@ Keep the backend running, then in a second terminal:
 npm run dev:landing
 ```
 
-Opens `http://localhost:3001`. Set `DEMO_BACKEND_ORIGIN` if the backend is not at `http://127.0.0.1:4000`.
+Opens `http://localhost:3022`. Set `DEMO_BACKEND_ORIGIN` if the backend is not at `http://127.0.0.1:4000`.
 
 ### Tests
 
