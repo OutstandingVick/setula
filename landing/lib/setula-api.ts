@@ -33,12 +33,12 @@ export class SetulaApi {
   health() { return this.request("/health", z.object({ status: z.literal("ok") })); }
   createBeneficiary(body: { name: string; email: string; bankAccountLast4: string }, key: string) { return this.request("/api/beneficiaries", beneficiarySchema, { method: "POST", body, key }); }
   createInvoice(body: { beneficiaryId: string; reference: string; amountInrMinor: number; description: string }, key: string) { return this.request("/api/invoices", invoiceSchema, { method: "POST", body, key }); }
-  createQuote(invoiceId: string, key: string) { return this.request(`/api/invoices/${invoiceId}/quotes`, quoteSchema, { method: "POST", body: {}, key }); }
+  createQuote(invoiceId: string, key: string) { return this.request(`/api/invoices/${encodeURIComponent(invoiceId)}/quotes`, quoteSchema, { method: "POST", body: {}, key }); }
   createPayment(body: { invoiceId: string; quoteId: string }, key: string) { return this.request("/api/payments", paymentSchema, { method: "POST", body, key }); }
-  confirmFunding(paymentId: string, key: string) { return this.request(`/api/payments/${paymentId}/funding-confirmations`, paymentSchema, { method: "POST", body: {}, key }); }
-  executeSettlement(paymentId: string, key: string) { return this.request(`/api/payments/${paymentId}/settlements`, paymentSchema, { method: "POST", body: {}, key }); }
-  getPayment(paymentId: string) { return this.request(`/api/payments/${paymentId}`, aggregateSchema); }
-  completePayout(paymentId: string, key: string) { return this.request(`/api/payments/${paymentId}/demo-payouts`, payoutResultSchema, { method: "POST", body: { status: "DELIVERED" }, key }); }
-  getReceipt(receiptId: string) { return this.request(`/api/receipts/${receiptId}`, receiptSchema); }
+  confirmFunding(paymentId: string, key: string) { const id = encodeURIComponent(paymentId); return this.request(`/api/payments/${id}/funding-confirmations`, paymentSchema, { method: "POST", body: {}, key }); }
+  executeSettlement(paymentId: string, key: string) { const id = encodeURIComponent(paymentId); return this.request(`/api/payments/${id}/settlements`, paymentSchema, { method: "POST", body: {}, key }); }
+  getPayment(paymentId: string) { return this.request(`/api/payments/${encodeURIComponent(paymentId)}`, aggregateSchema); }
+  completePayout(paymentId: string, key: string) { const id = encodeURIComponent(paymentId); return this.request(`/api/payments/${id}/demo-payouts`, payoutResultSchema, { method: "POST", body: { status: "DELIVERED" }, key }); }
+  getReceipt(receiptId: string) { return this.request(`/api/receipts/${encodeURIComponent(receiptId)}`, receiptSchema); }
 }
 export const setulaApi = new SetulaApi();
